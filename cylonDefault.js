@@ -4,7 +4,8 @@ var sense = require('ds18b20');
 Cylon.robot({
   connection: { name: 'raspi', adaptor: 'raspi' },
   devices: { 
-  	led: { name: 'led', driver: 'led', pin: 11 }
+  	led: { driver: 'led', pin: 11, connection: 'raspi' },
+  	relay: { driver: 'led', pin: 16, connection: 'raspi' }
   },
 
   work: function(my) {
