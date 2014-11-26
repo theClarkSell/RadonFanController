@@ -11,7 +11,7 @@ Cylon.robot({
 
 */
 
-  device: { name: 'led', driver: 'led', pin: 11 },
+  device: [ { name: 'led', driver: 'led', pin: 11 }, { name: 'led2', driver: 'led', pin: 16 }  ],
 
   work: function(my) {
     return every(1..second(), function() {
