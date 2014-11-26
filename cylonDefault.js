@@ -3,7 +3,11 @@ var sense = require('ds18b20');
 
 Cylon.robot({
   connection: { name: 'raspi', adaptor: 'raspi' },
-  device: { name: 'led', driver: 'led', pin: 11 },
+  devices: { 
+  	led: { driver: 'led', pin: 11 },
+  	relay: { driver: 'led', pin: 16 }
+  },
+
   work: function(my) {
     return every(1..second(), function() {
 		sense.sensors(function(err, ids) {
@@ -13,6 +17,8 @@ Cylon.robot({
 		  		console.log('Current temperature is', temp);
 			});
 		});
+
+		my.relay.toggle();
 
   		return my.led.toggle();
     });
