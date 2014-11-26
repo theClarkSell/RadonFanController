@@ -7,12 +7,11 @@ Cylon.robot({
   work: function(my) {
     return every(1..second(), function() {
 		sense.sensors(function(err, ids) {
-		  console.log('sensor id', ids); // got sensor IDs ...
-		});
+	  		sense.temperature(ids, function(err, value) {
+	  			var temp = value * 9 / 5 + 32;
 
-		// ...
-		sense.temperature('28-00000652eb08', function(err, value) {
-		  console.log('Current temperature is', value);
+		  		console.log('Current temperature is', temp);
+			});
 		});
 
   		return my.led.toggle();
