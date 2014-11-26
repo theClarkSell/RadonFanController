@@ -3,10 +3,15 @@ var sense = require('ds18b20');
 
 Cylon.robot({
   connection: { name: 'raspi', adaptor: 'raspi' },
+  /*
   device: { 
   	led: { driver: 'led', pin: 11, connection: 'raspi' },
   	relay: { driver: 'led', pin: 16, connection: 'raspi' }
   },
+
+*/
+
+  device: { name: 'led', driver: 'led', pin: 11 },
 
   work: function(my) {
     return every(1..second(), function() {
@@ -18,7 +23,7 @@ Cylon.robot({
 			});
 		});
 
-		my.relay.toggle();
+		//my.relay.toggle();
 
   		return my.led.toggle();
     });
