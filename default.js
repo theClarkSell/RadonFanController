@@ -32,9 +32,8 @@ function done() {
 gpio.setup(_pinFan, gpio.DIR_OUT, onSetup);
 
 //just a test...
-var ledPin = 17;
-gpio.setup(ledPin, gpio.DIR_OUT, onSetup);
-gpio.write(ledPin, true, done);
+gpio.setup(7, gpio.DIR_OUT, onSetup);
+//gpio.write(7, true, done);
 
 var tempFunc = function () {
 	console.log('checking temp');
@@ -61,12 +60,12 @@ var isTempToCold = function (temp, relay) {
 var relayController = {
 	on: function (pin) { 
 		console.log ('turning relay on'); 
-		gpio.write(pin, true, done);
+		//gpio.write(pin, true, done);
 	},
 	
 	off: function (pin) { 
 		console.log ('turning relay off'); 
-		gpio.write(pin, false, done);
+		//gpio.write(pin, false, done);
 	}
 }
 
