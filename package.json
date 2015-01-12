@@ -1,0 +1,30 @@
+{
+  "name": "radonFanController",
+  "version": "0.1.0",
+  "main": "default.js",
+  "description": "Controller for the house Radon Fan.",
+  "homepage": "http://csell.net",
+  
+  "author": "Clark Sell <clark.sell@csell.net>",
+
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/csell5/radonfancontroller"
+  },
+
+  "license": "Apache 2.0",
+
+  "devDependencies": {
+    "sinon-chai": "~2.6.0",
+    "chai":       "~1.10.0",
+    "mocha":      "~2.0.1",
+    "sinon":      "~1.12.1"
+  },
+
+  "peerDependencies": {
+  },
+
+  "dependencies": {
+    "express":      "~4.10.4"
+  }
+}
