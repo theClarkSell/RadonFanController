@@ -1,5 +1,5 @@
 var express = require('express');
-var temp = require('ds18b20');
+var sense = require('ds18b20');
 var gpio = require('rpi-gpio');
 
 console.log(Date.now(), '>> Starting...');
