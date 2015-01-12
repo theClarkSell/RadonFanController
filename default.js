@@ -7,7 +7,7 @@ console.log(Date.now(), '>> Starting...');
 var _tempTrigger = 90;
 var _intervalCheck = 5000;
 
-var _pinFan = 22;
+var _pinFan = 25;
 var _pinDeIcer = 00;
 
 var _override = false;
@@ -32,7 +32,7 @@ function done() {
 gpio.setup(_pinFan, gpio.DIR_OUT, onSetup);
 
 //just a test...
-var ledPin = 11;
+var ledPin = 17;
 gpio.setup(ledPin, gpio.DIR_OUT, onSetup);
 gpio.write(ledPin, true, done);
 
