@@ -35,7 +35,7 @@ gpio.setup(11, gpio.DIR_OUT, onSetup);
 //gpio.write(7, true, done);
 
 var tempFunc = function () {
-	console.log(Date.Now(), '>> checking temp');
+	console.log(Date.now(), '>> checking temp');
 
 	sense.sensors(function(err, ids) {
 		sense.temperature(ids, function(err, value) {
