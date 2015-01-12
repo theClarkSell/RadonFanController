@@ -25,7 +25,7 @@ gpio.setup(_pinFan, gpio.DIR_OUT);
 //just a test...
 var ledPin = 11;
 gpio.setup(ledPin, gpio.DIR_OUT);
-gpio.write(ledPin, 0);
+gpio.write(ledPin, true);
 
 var tempFunc = function () {
 	console.log('checking temp');
