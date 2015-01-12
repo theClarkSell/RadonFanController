@@ -15,7 +15,7 @@ var _override = false;
 var app = express();
 
 function run() {
-    setInterval(tempFunc(), _intervalCheck);
+    setInterval(tempFunc, _intervalCheck);
 }
 
 function onSetup () {
