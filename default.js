@@ -21,7 +21,7 @@ function run() {
 
 var tempFunc = function () {
 	console.log('checking temp');
-	
+
 	sense.sensors(function(err, ids) {
 		sense.temperature(ids, function(err, value) {
 			var temp = value * 9 / 5 + 32;
@@ -42,12 +42,12 @@ var isTempToCold = function (temp, relay) {
 } 
 
 var relayController = {
-	on = function (pin) { 
+	on: function (pin) { 
 		console.log ('turning relay on'); 
 		gpio.write(pin, 0, on);
 	},
 	
-	off = function (pin) { 
+	off: function (pin) { 
 		console.log ('turning relay off'); 
 		gpio.write(pin, 1, off);
 	}
