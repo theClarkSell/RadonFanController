@@ -7,8 +7,8 @@ console.log(Date.now(), '>> Starting...');
 var _tempTrigger = 90;
 var _intervalCheck = 5000;
 
-var _pinFan = 7;
-var _pinDeIcer = 22;
+var _pinFan = 22;
+var _pinDeIcer = 00;
 
 var _override = false;
 
@@ -18,6 +18,10 @@ function run() {
 	tempFunc();
     setInterval(run, _intervalCheck);
 }
+
+//turn on the LED:
+gpio.write(11, 0, on);
+
 
 var tempFunc = function () {
 	console.log('checking temp');
