@@ -32,7 +32,7 @@ gpio.setup(_pinFan, gpio.DIR_OUT, onSetup);
 
 //just a test...
 gpio.setup(11, gpio.DIR_OUT, onSetup);
-//gpio.write(7, true, done);
+gpio.write(11, true, done);
 
 var tempFunc = function () {
 	console.log(Date.now(), '>> checking temp');
