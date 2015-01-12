@@ -7,7 +7,7 @@ console.log(Date.now(), '>> Starting...');
 var _tempTrigger = 90;
 var _intervalCheck = 5000;
 
-var _pinFan = 25;
+var _pinFan = 22;
 var _pinDeIcer = 00;
 
 var _override = false;
@@ -31,16 +31,16 @@ function done() {
 gpio.setup(_pinFan, gpio.DIR_OUT, onSetup);
 
 //just a test...
-gpio.setup(7, gpio.DIR_OUT, onSetup);
+gpio.setup(11, gpio.DIR_OUT, onSetup);
 //gpio.write(7, true, done);
 
 var tempFunc = function () {
-	console.log('checking temp');
+	console.log(Date.Now(), '>> checking temp');
 
 	sense.sensors(function(err, ids) {
 		sense.temperature(ids, function(err, value) {
 			var temp = value * 9 / 5 + 32;
-			console.log('Current temperature is', temp);
+			console.log('Current temperature is: ', temp);
 
 			//Check the temp and kill the fan
 			isTempToCold(temp, relayController);
