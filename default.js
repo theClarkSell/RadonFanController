@@ -1,6 +1,7 @@
 var express = require('express');
 var sense = require('ds18b20');
 var gpio = require('rpi-gpio');
+var async = require('async');
 
 console.log(Date.now(), '>> Starting...');
 
@@ -15,22 +16,25 @@ var _override = false;
 var app = express();
 
 function run() {
+	//turn the LED on
+	gpio.write(11, true);
     setInterval(tempFunc, _intervalCheck);
 }
 
-function onSetup (error) {
-	console.log(error);
-	console.log('pin setup');
-}
-
-function done() {
-	console.log('pin written');
-}
-
-gpio.setup(_pinFan, gpio.DIR_OUT);
-gpio.setup(7, gpio.DIR_OUT);
-
-//gpio.write(7, true, done);
+async.parallel([
+    function(callback) {
+        gpio.setup(_pinFan, gpio.DIR_OUT, callback)
+    },
+    function(callback) {
+        gpio.setup(11, gpio.DIR_OUT, callback)
+    },
+    function(callback) {
+        //gpio.setup(16, gpio.DIR_OUT, callback)
+    },
+], function(err, results) {
+    console.log('Pins set up');
+    run();
+});
 
 var tempFunc = function () {
 	console.log(Date.now(), '>> checking temp');
@@ -79,6 +83,3 @@ var server = app.listen(3000, function () {
   console.log('Example app listening at http://%s:%s', host, port);
 
 })
-
-
-run();
