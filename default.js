@@ -32,9 +32,11 @@ function done() {
 gpio.setup(_pinFan, gpio.DIR_OUT, onSetup);
 
 //just a test...
+/*
 var _ledPin = 7;
 gpio.setup(_ledPin, gpio.DIR_OUT, onSetup);
 gpio.write(_ledPin, true, done);
+*/
 
 var tempFunc = function () {
 	console.log(Date.now(), '>> checking temp');
