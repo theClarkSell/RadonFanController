@@ -27,16 +27,10 @@ function done() {
 	console.log('pin written');
 }
 
+var gpio.setup(_pinFan, gpio.DIR_OUT, onSetup);
+gpio.setup(7, gpio.DIR_OUT, onSetup);
 
-//turn on the LED:
-gpio.setup(_pinFan, gpio.DIR_OUT, onSetup);
-
-//just a test...
-/*
-var _ledPin = 7;
-gpio.setup(_ledPin, gpio.DIR_OUT, onSetup);
-gpio.write(_ledPin, true, done);
-*/
+gpio.write(7, true, done);
 
 var tempFunc = function () {
 	console.log(Date.now(), '>> checking temp');
