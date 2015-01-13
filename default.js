@@ -18,7 +18,8 @@ function run() {
     setInterval(tempFunc, _intervalCheck);
 }
 
-function onSetup () {
+function onSetup (error) {
+	console.log(error);
 	console.log('pin setup');
 }
 
