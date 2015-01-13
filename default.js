@@ -37,6 +37,7 @@ async.parallel([
 
     //turn the LED on
 	gpio.write(11, true, writeComplete);
+	gpio.write(_pinFan, false, writeComplete);
     run();
 });
 
