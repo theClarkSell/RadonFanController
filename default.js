@@ -27,7 +27,7 @@ function done() {
 	console.log('pin written');
 }
 
-var gpio.setup(_pinFan, gpio.DIR_OUT, onSetup);
+gpio.setup(_pinFan, gpio.DIR_OUT, onSetup);
 gpio.setup(7, gpio.DIR_OUT, onSetup);
 
 gpio.write(7, true, done);
