@@ -31,7 +31,6 @@ function done() {
 //gpio.setup(_pinFan, gpio.DIR_OUT, onSetup);
 
 //just a test...
-console.log('setting up pin 11');
 gpio.setup(11, gpio.DIR_OUT, onSetup);
 gpio.write(11, true, done);
 
