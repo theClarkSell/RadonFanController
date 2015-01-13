@@ -15,8 +15,6 @@ var _override = false;
 var app = express();
 
 function run() {
-	//turn the LED on
-	//gpio.write(11, true);
     setInterval(tempFunc, _intervalCheck);
 }
 
@@ -32,6 +30,9 @@ async.parallel([
     },
 ], function(err, results) {
     console.log('All pins set up');
+
+    //turn the LED on
+	gpio.write(11, true);
     run();
 });
 
