@@ -12,12 +12,11 @@ var _pinFan = 22;
 var _pinDeIcer = 00;
 
 var _override = false;
-
 var app = express();
 
 function run() {
 	//turn the LED on
-	gpio.write(11, true);
+	//gpio.write(11, true);
     setInterval(tempFunc, _intervalCheck);
 }
 
@@ -32,7 +31,7 @@ async.parallel([
         //gpio.setup(16, gpio.DIR_OUT, callback)
     },
 ], function(err, results) {
-    console.log('Pins set up');
+    console.log('All pins set up');
     run();
 });
 
