@@ -1,7 +1,7 @@
-var express = require('express');
-var sense = require('ds18b20');
-var gpio = require('rpi-gpio');
-var async = require('async');
+var async       = require('async');
+var express 	= require('express');
+var sense 		= require('ds18b20');
+var gpio 		= require('rpi-gpio');
 
 console.log(Date.now(), '>> Starting...');
 
