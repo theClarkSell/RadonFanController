@@ -31,9 +31,8 @@ function done() {
 gpio.setup(_pinFan, gpio.DIR_OUT, onSetup);
 
 //just a test...
-var pinNumber = 11;
-gpio.setup(pinNumber, gpio.DIR_OUT, onSetup);
-gpio.write(pinNumber, true);
+gpio.setup(11);
+gpio.write(11, true);
 
 var tempFunc = function () {
 	console.log(Date.now(), '>> checking temp');
