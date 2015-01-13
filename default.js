@@ -28,9 +28,10 @@ function done() {
 
 
 //turn on the LED:
-gpio.setup(_pinFan, gpio.DIR_OUT, onSetup);
+//gpio.setup(_pinFan, gpio.DIR_OUT, onSetup);
 
 //just a test...
+console.log('setting up pin 11');
 gpio.setup(11, gpio.DIR_OUT, onSetup);
 gpio.write(11, true, done);
 
