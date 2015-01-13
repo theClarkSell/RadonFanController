@@ -7,7 +7,7 @@ console.log(Date.now(), '>> Starting...');
 var _tempTrigger = 90;
 var _intervalCheck = 5000;
 
-var _pinFan = 18;
+var _pinFan = 22;
 var _pinDeIcer = 00;
 
 var _override = false;
@@ -32,8 +32,9 @@ function done() {
 gpio.setup(_pinFan, gpio.DIR_OUT, onSetup);
 
 //just a test...
-gpio.setup(22, gpio.DIR_OUT, onSetup);
-//gpio.write(11, true, done);
+var _ledPin = 7;
+gpio.setup(_ledPin, gpio.DIR_OUT, onSetup);
+gpio.write(_ledPin, true, done);
 
 var tempFunc = function () {
 	console.log(Date.now(), '>> checking temp');
@@ -60,12 +61,12 @@ var isTempToCold = function (temp, relay) {
 var relayController = {
 	on: function (pin) { 
 		console.log ('turning relay on'); 
-		//gpio.write(pin, true, done);
+		gpio.write(pin, true, done);
 	},
 	
 	off: function (pin) { 
 		console.log ('turning relay off'); 
-		//gpio.write(pin, false, done);
+		gpio.write(pin, false, done);
 	}
 }
 
