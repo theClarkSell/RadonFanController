@@ -27,10 +27,10 @@ function done() {
 	console.log('pin written');
 }
 
-gpio.setup(_pinFan, gpio.DIR_OUT, onSetup);
-gpio.setup(7, gpio.DIR_OUT, onSetup);
+gpio.setup(_pinFan, gpio.DIR_OUT);
+gpio.setup(7, gpio.DIR_OUT);
 
-gpio.write(7, true, done);
+//gpio.write(7, true, done);
 
 var tempFunc = function () {
 	console.log(Date.now(), '>> checking temp');
