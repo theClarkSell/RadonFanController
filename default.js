@@ -66,7 +66,7 @@ var isTempToCold = function (temp, relay) {
 var relayController = {
 	on: function (pin) { 
 		console.log ('turning relay on'); 
-		gpio.write(pin, true, writeComplete);
+		gpio.write(pin, false, writeComplete);
 	},
 	
 	off: function (pin) { 
