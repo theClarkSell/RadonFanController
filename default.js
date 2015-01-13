@@ -7,7 +7,7 @@ console.log(Date.now(), '>> Starting...');
 var _tempTrigger = 90;
 var _intervalCheck = 5000;
 
-var _pinFan = 22;
+var _pinFan = 18;
 var _pinDeIcer = 00;
 
 var _override = false;
@@ -32,8 +32,8 @@ function done() {
 gpio.setup(_pinFan, gpio.DIR_OUT, onSetup);
 
 //just a test...
-gpio.setup(11, gpio.DIR_OUT, onSetup);
-gpio.write(11, true, done);
+gpio.setup(22, gpio.DIR_OUT, onSetup);
+//gpio.write(11, true, done);
 
 var tempFunc = function () {
 	console.log(Date.now(), '>> checking temp');
