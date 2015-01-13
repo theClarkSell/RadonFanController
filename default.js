@@ -18,6 +18,10 @@ function run() {
     setInterval(tempFunc, _intervalCheck);
 }
 
+function writeComplete () {
+	console.log('pin written');
+}
+
 async.parallel([
     function(callback) {
         gpio.setup(_pinFan, gpio.DIR_OUT, callback)
@@ -32,7 +36,7 @@ async.parallel([
     console.log('All pins set up');
 
     //turn the LED on
-	gpio.write(11, true);
+	gpio.write(11, true, writeComplete);
     run();
 });
 
@@ -61,12 +65,12 @@ var isTempToCold = function (temp, relay) {
 var relayController = {
 	on: function (pin) { 
 		console.log ('turning relay on'); 
-		gpio.write(pin, true);
+		gpio.write(pin, true, writeComplete);
 	},
 	
 	off: function (pin) { 
 		console.log ('turning relay off'); 
-		gpio.write(pin, false);
+		gpio.write(pin, false, writeComplete);
 	}
 }
 
