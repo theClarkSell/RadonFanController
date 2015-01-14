@@ -28,15 +28,15 @@ function pinInit(pinNumber) {
 async.parallel([
     function(callback) {
         gpio.setup(_pinFan, gpio.DIR_OUT, pinInit(_pinFan));
-        return callback();
+        //return callback();
     },
     function(callback) {
         gpio.setup(11, gpio.DIR_OUT, pinInit(11));
-        return callback();
+        //return callback();
     },
     function(callback) {
         //gpio.setup(16, gpio.DIR_OUT, pinInit)
-        return callback();
+        //return callback();
     },
 ], function(err, results) {
     console.log('All pins set up');
