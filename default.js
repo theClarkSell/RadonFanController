@@ -17,6 +17,13 @@ var _pinDeIcer = 00;
 var _override = false;
 
 function run() {
+
+	//Init all the pins
+    pinInit([_pinFan, 11]);
+
+    //turn the LED on
+	gpio.write(11, true, writeComplete(11, 'led on'));
+
     setInterval(tempFunc, _intervalCheck);
 }
 
@@ -43,13 +50,7 @@ async.parallel([
     }
 
 ], function(err, results) {
-    
-    //Init all the pins
-    //pinInit([_pinFan, 11]);
-
-    //turn the LED on
-	//gpio.write(11, true, writeComplete(11, 'led on'));
-    
+	
     //Kick off things...
     run();
 });
