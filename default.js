@@ -9,11 +9,15 @@ var _app = express();
 
 var _tempTrigger = 90;
 var _intervalCheck = 5000;
+
+//pings
 var _pinFan = 22;
 var _pinDeIcer = 00;
+
 var _override = false;
 
 function run() {
+	console.log('hi');
     setInterval(tempFunc, _intervalCheck);
 }
 
@@ -33,19 +37,19 @@ function writeComplete (pinNumber, message) {
 async.parallel([
     function(callback) {
         gpio.setup(_pinFan, gpio.DIR_OUT, callback);
-        //return callback();
     },
+
     function(callback) {
         gpio.setup(11, gpio.DIR_OUT, callback);
-        //return callback();
     }
+
 ], function(err, results) {
     
     //Init all the pins
     pinInit([_pinFan, 11]);
 
     //turn the LED on
-	gpio.write(11, true, writeComplete(11, 'led on'));
+	//gpio.write(11, true, writeComplete(11, 'led on'));
     
     //Kick off things...
     run();
