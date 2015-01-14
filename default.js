@@ -8,7 +8,7 @@ console.log('Starting.....');
 var _app = express();
 
 var _tempTrigger = 90;
-var _intervalCheck = 5000;
+var _intervalCheck = 10000;
 
 //pings
 var _pinFan = 22;
