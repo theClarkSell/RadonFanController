@@ -17,8 +17,13 @@ function run() {
     setInterval(tempFunc, _intervalCheck);
 }
 
-function pinInit(pinNumber) {
-	gpio.write(pinNumber, false, writeComplete(pinNumber, 'off'));
+function pinInit(pinNumbers) {
+	
+	for (pin in pinNumbers) {
+		gpio.write(pin, false, writeComplete(pin, 'off'));	
+	}
+
+	console.log('All pins set up');
 }
 
 function writeComplete (pinNumber, message) {
@@ -27,18 +32,22 @@ function writeComplete (pinNumber, message) {
 
 async.parallel([
     function(callback) {
-        gpio.setup(_pinFan, gpio.DIR_OUT, pinInit(_pinFan));
+        gpio.setup(_pinFan, gpio.DIR_OUT, callback);
         //return callback();
     },
     function(callback) {
-        gpio.setup(11, gpio.DIR_OUT, pinInit(11));
+        gpio.setup(11, gpio.DIR_OUT, callback;
         //return callback();
     }
 ], function(err, results) {
-    console.log('All pins set up');
+    
+    //Init all the pins
+    pinInit([_pinFan, 11]);
 
     //turn the LED on
 	gpio.write(11, true, writeComplete(11, 'led on'));
+    
+    //Kick off things...
     run();
 });
 
