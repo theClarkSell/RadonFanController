@@ -42,7 +42,7 @@ async.parallel([
     console.log('All pins set up');
 
     //turn the LED on
-	gpio.write(11, true, writeComplete(11, 'led on');
+	gpio.write(11, true, writeComplete(11, 'led on'));
     run();
 });
 
