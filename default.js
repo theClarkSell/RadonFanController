@@ -22,7 +22,7 @@ function test () {
 	console.log('test');
 }
 
-var pinFan = new GPIO(_pinFan, 'out');
+var pinFan = new rpi(_pinFan, 'out');
   pinFan.on('ready', function() {
    console.log('ready');
    pinFan.high(test);
