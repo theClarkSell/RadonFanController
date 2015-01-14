@@ -5,13 +5,13 @@ var gpio 		= require('rpi-gpio');
 
 console.log('Starting.....');
 
+var _app = express();
+
 var _tempTrigger = 90;
 var _intervalCheck = 5000;
 var _pinFan = 22;
 var _pinDeIcer = 00;
 var _override = false;
-
-var app = express();
 
 function run() {
     setInterval(tempFunc, _intervalCheck);
@@ -27,22 +27,18 @@ function writeComplete (pinNumber, message) {
 
 async.parallel([
     function(callback) {
-        gpio.setup(_pinFan, gpio.DIR_OUT, pinInit(_pinFan));
+        gpio.setup(_pinFan, gpio.DIR_OUT, callback);
         //return callback();
     },
     function(callback) {
-        gpio.setup(11, gpio.DIR_OUT, pinInit(11));
+        gpio.setup(11, gpio.DIR_OUT, callback);
         //return callback();
-    },
-    function(callback) {
-        //gpio.setup(16, gpio.DIR_OUT, pinInit)
-        //return callback();
-    },
+    }
 ], function(err, results) {
     console.log('All pins set up');
 
     //turn the LED on
-	//gpio.write(11, true, writeComplete(11, 'led on'));
+	gpio.write(11, true, writeComplete(11, 'led on'));
     run();
 });
 
@@ -79,11 +75,11 @@ var relayController = {
 }
 
 //EXPRESS 
-app.get('/', function (req, res) {
+_app.get('/', function (req, res) {
   res.send('Hello World!');
 })
 
-var server = app.listen(3000, function () {
+var server = _app.listen(3000, function () {
 
   var host = server.address().address;
   var port = server.address().port;
