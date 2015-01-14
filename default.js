@@ -19,7 +19,7 @@ var _override = false;
 function run() {
 
 	//Init all the pins
-    pinInit([_pinFan, 11]);
+    //pinInit([_pinFan, 11]);
 
     //turn the LED on
 	gpio.write(11, true, writeComplete(11, 'led on'));
@@ -50,7 +50,7 @@ async.parallel([
     }
 
 ], function(err, results) {
-	
+
     //Kick off things...
     run();
 });
