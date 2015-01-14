@@ -27,11 +27,11 @@ function writeComplete (pinNumber, message) {
 
 async.parallel([
     function(callback) {
-        gpio.setup(_pinFan, gpio.DIR_OUT, callback);
+        gpio.setup(_pinFan, gpio.DIR_OUT, pinInit(_pinFan));
         //return callback();
     },
     function(callback) {
-        gpio.setup(11, gpio.DIR_OUT, callback);
+        gpio.setup(11, gpio.DIR_OUT, pinInit(11));
         //return callback();
     }
 ], function(err, results) {
