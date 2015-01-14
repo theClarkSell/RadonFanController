@@ -2,6 +2,8 @@ var async       = require('async');
 var express 	= require('express');
 var sense 		= require('ds18b20');
 var gpio 		= require('rpi-gpio');
+var rpi 		= require('rpi');
+
 
 console.log('Starting.....');
 
@@ -16,21 +18,29 @@ var _pinDeIcer = 00;
 
 var _override = false;
 
+function test () {
+	console.log('test');
+}
+
+var pinFan = new GPIO(_pinFan, 'out');
+  pinFan.on('ready', function() {
+   console.log('ready');
+   pinFan.high(test);
+  });
+
+
+/*
 function run() {
 
 	//Init all the pins
-    //pinInit([_pinFan, 11]);
+    pinInit([_pinFan, 11]);
 
     //turn the LED on
-	//gpio.write(11, true, writeComplete(11, 'led on'));
+	gpio.write(11, true, writeComplete(11, 'led on'));
 
     setInterval(tempFunc, _intervalCheck);
 }
 
-
-gpio.on('ready', function(channel, value) {
-    console.log('Channel ' + channel + ' value is now ' + value);
-});
 
 function pinInit(pinNumbers) {
 
@@ -105,3 +115,5 @@ var server = _app.listen(3000, function () {
   console.log('Example app listening at http://%s:%s', host, port);
 
 })
+
+*/
