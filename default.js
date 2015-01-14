@@ -18,7 +18,7 @@ function run() {
 }
 
 function pinInit(pinNumbers) {
-	
+
 	for (pin in pinNumbers) {
 		gpio.write(pin, false, writeComplete(pin, 'off'));	
 	}
@@ -36,7 +36,7 @@ async.parallel([
         //return callback();
     },
     function(callback) {
-        gpio.setup(11, gpio.DIR_OUT, callback;
+        gpio.setup(11, gpio.DIR_OUT, callback);
         //return callback();
     }
 ], function(err, results) {
