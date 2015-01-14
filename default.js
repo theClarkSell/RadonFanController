@@ -22,10 +22,15 @@ function run() {
     //pinInit([_pinFan, 11]);
 
     //turn the LED on
-	gpio.write(11, true, writeComplete(11, 'led on'));
+	//gpio.write(11, true, writeComplete(11, 'led on'));
 
     setInterval(tempFunc, _intervalCheck);
 }
+
+
+gpio.on('ready', function(channel, value) {
+    console.log('Channel ' + channel + ' value is now ' + value);
+});
 
 function pinInit(pinNumbers) {
 
