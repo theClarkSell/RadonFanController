@@ -48,7 +48,7 @@ async.parallel([
     //pinInit([_pinFan, 11]);
 
     //turn the LED on
-	gpio.write(11, true, writeComplete(11, 'led on'));
+	//gpio.write(11, true, writeComplete(11, 'led on'));
     
     //Kick off things...
     run();
