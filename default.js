@@ -2,7 +2,7 @@ var async       = require('async');
 var express 	= require('express');
 var sense 		= require('ds18b20');
 var gpio 		= require('rpi-gpio');
-var rpi 		= require('rpi');
+var rpi 		= require('rpi').GPIO;
 
 
 console.log('Starting.....');
