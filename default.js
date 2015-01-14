@@ -3,40 +3,46 @@ var express 	= require('express');
 var sense 		= require('ds18b20');
 var gpio 		= require('rpi-gpio');
 
-console.log(Date.now(), '>> Starting...');
+console.log('Starting.....');
 
 var _tempTrigger = 90;
 var _intervalCheck = 5000;
-
 var _pinFan = 22;
 var _pinDeIcer = 00;
-
 var _override = false;
+
 var app = express();
 
 function run() {
     setInterval(tempFunc, _intervalCheck);
 }
 
-function writeComplete () {
-	console.log('pin written');
+function writeComplete (pinNumber, message) {
+	console.log('pin:', pinNumber, '--', message);
+}
+
+function pinInit(pinNumber) {
+	gpio.write(pinNumber, false, writeComplete(pinNumber, 'off'));
 }
 
 async.parallel([
     function(callback) {
-        gpio.setup(_pinFan, gpio.DIR_OUT, callback)
+        gpio.setup(_pinFan, gpio.DIR_OUT, pinInit)
+        return callback();
     },
     function(callback) {
-        gpio.setup(11, gpio.DIR_OUT, callback)
+        gpio.setup(11, gpio.DIR_OUT, pinInit)
+        return callback();
     },
     function(callback) {
-        //gpio.setup(16, gpio.DIR_OUT, callback)
+        //gpio.setup(16, gpio.DIR_OUT, pinInit)
+        return callback();
     },
 ], function(err, results) {
     console.log('All pins set up');
 
     //turn the LED on
-	gpio.write(11, true, writeComplete);
+	gpio.write(11, true, writeComplete(11, 'led on');
     run();
 });
 
@@ -63,14 +69,12 @@ var isTempToCold = function (temp, relay) {
 } 
 
 var relayController = {
-	on: function (pin) { 
-		console.log ('turning relay on'); 
-		gpio.write(pin, true, writeComplete);
+	on: function (pin) {  
+		gpio.write(pin, true, writeComplete(pin, 'on'));
 	},
 	
 	off: function (pin) { 
-		console.log ('turning relay off'); 
-		gpio.write(pin, false, writeComplete);
+		gpio.write(pin, false, writeComplete(pin, 'off'));
 	}
 }
 
