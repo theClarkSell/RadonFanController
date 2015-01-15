@@ -1,8 +1,8 @@
 var async       = require('async');
 var express 	= require('express');
 var sense 		= require('ds18b20');
-var gpio 		= require('rpi-gpio');
-var rpi 		= require('rpi').GPIO;
+//var gpio 		= require('rpi-gpio');
+var rpi 		= require('rpi');
 
 
 console.log('Starting.....');
@@ -22,7 +22,7 @@ function test () {
 	console.log('test');
 }
 
-var pinFan = new rpi(_pinFan, 'out');
+var pinFan = new rpi.GPIO(_pinFan, 'out');
   pinFan.on('ready', function() {
    console.log('ready');
    pinFan.high(test);
