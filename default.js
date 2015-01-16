@@ -2,7 +2,7 @@ var async       = require('async');
 var express 	= require('express');
 var sense 		= require('ds18b20');
 //var gpio 		= require('rpi-gpio');
-var rpi 		= require('rpi');
+var rpi 		= require('pi-gpio').GPIO;
 
 
 console.log('Starting.....');
@@ -22,12 +22,11 @@ function test () {
 	console.log('test');
 }
 
-var pinFan = new rpi.GPIO(_pinFan, 'out');
-  pinFan.on('ready', function() {
-   console.log('ready');
-   pinFan.high(test);
-  });
-
+rpi.open(16, "output", function(err) {     // Open pin 16 for output
+    rpi.write(16, 1, function() {          // Set pin 16 high (1)
+        rpi.close(16);                     // Close pin 16
+    });
+});
 
 /*
 function run() {
