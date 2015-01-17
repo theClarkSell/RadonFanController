@@ -22,9 +22,10 @@ function test () {
 	console.log('test');
 }
 
-rpi.open(16, "output", function(err) {     // Open pin 16 for output
-    rpi.write(16, 1, function() {          // Set pin 16 high (1)
-        rpi.close(16);                     // Close pin 16
+rpi.open(11, "output", function(err) {     // Open pin 16 for output
+    rpi.write(11, 1, function() {          // Set pin 16 high (1)
+        rpi.close(11); // Close pin 16
+        console.log('hi');
     });
 });
 
@@ -116,3 +117,14 @@ var server = _app.listen(3000, function () {
 })
 
 */
+
+//gracefull exit
+process.on('SIGINT', function() {
+    console.log("\nGracefully shutting down from SIGINT (Ctrl+C)");
+   
+   	rpi.close(11); // Close pin 16
+
+    console.log("Exiting...");
+    process.exit();
+        
+});
