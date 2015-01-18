@@ -3,8 +3,7 @@ var express 	= require('express');
 var sense 		= require('ds18b20');
 var gpio 		= require('rpi-gpio');
 
-
-console.log('Starting.....');
+console.log('Hello.....');
 
 var _app = express();
 
@@ -15,8 +14,7 @@ var _intervalCheck = 5000;
 var _pinLed = 11;
 var _pinFan = 16;
 var _pinDeIcer = 18;
-
-var _override = false;
+var _pinNumbers = [_pinFan, _pinDeIcer, _pinLed];
 
 async.parallel([
     function(callback) {
@@ -41,11 +39,11 @@ async.parallel([
 });
 
 function run() {
-    pinInit([_pinFan, _pinDeIcer, _pinLed]);
+    pinInit(_pinNumbers);
 	
 	setTimeout(function() {
 		gpio.write(_pinLed, true, writeComplete(_pinLed, 'led on'));
-	}, _intervalCheck);
+	}, 2000);
 
     setInterval(tempFunc, _intervalCheck);
 }
@@ -115,6 +113,8 @@ var server = _app.listen(3000, function () {
 process.on('SIGINT', function() {
 	console.log("\nGracefully shutting down from SIGINT (Ctrl+C)");
    
+   	pinInit(_pinNumbers);
+
 	gpio.destroy(function() {
 		console.log('Closed pins, now exit');
             return process.exit(0);
