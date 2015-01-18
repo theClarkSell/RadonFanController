@@ -7,7 +7,9 @@ console.log('Hello.....');
 
 var _app = express();
 
-var _tempTrigger = 70;
+var _fanThreshold = 70;
+var _deIcerThreshold = 69;
+
 var _intervalCheck = 5000;
 
 //pins
@@ -54,7 +56,7 @@ function pinInit(pinNumbers) {
 		gpio.write(element, false, writeComplete(element, 'off'));	
 	})
 
-	console.log('All pins set up');
+	console.log('All pins initalized');
 }
 
 function writeComplete (pinNumber, message) {
@@ -70,17 +72,24 @@ var tempFunc = function () {
 			console.log('Current temperature is: ', temp);
 
 			//Check the temp and kill the fan
-			isTempToCold(temp, relayController);
+			shouldFanBeRunning(temp, relayController);
+			shouldDeIcerBeRunning(temp, relayController);
 		});
 	});
 }
 
-var isTempToCold = function (temp, relay) {
-	if ( temp <= _tempTrigger ) {
+function shouldFanBeRunning(temp, relay) {
+	if ( temp <= _fanThreshold ) {
 		relay.off(_pinFan);
-		relay.off(_pinDeIcer);
 	} else {
 		relay.on(_pinFan);
+	}
+} 
+
+function shouldDeIcerBeRunning(temp, relay) {
+	if ( temp <= _deIcerThreshold ) {
+		relay.off(_pinDeIcer);
+	} else {
 		relay.on(_pinDeIcer);
 	}
 } 
