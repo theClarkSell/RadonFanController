@@ -8,7 +8,7 @@ console.log('Starting.....');
 
 var _app = express();
 
-var _tempTrigger = 68;
+var _tempTrigger = 70;
 var _intervalCheck = 5000;
 
 //pins
@@ -42,7 +42,10 @@ async.parallel([
 
 function run() {
     pinInit([_pinFan, _pinDeIcer, _pinLed]);
-	//gpio.write(_pinLed, true, writeComplete(_pinLed, 'led on'));
+	
+	setTimeout(function() {
+		gpio.write(_pinLed, true, writeComplete(_pinLed, 'led on'));
+	}, _intervalCheck);
 
     setInterval(tempFunc, _intervalCheck);
 }
