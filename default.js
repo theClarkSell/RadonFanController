@@ -112,7 +112,7 @@ _app.get('/', function (req, res) {
 _app.get('/fan/on', function (req, res) {
   console.log('turning fan on');
 
-  relay.on(_pinFan);
+  relayController.on(_pinFan);
   
   res.send('fans on');
 })
