@@ -79,8 +79,10 @@ var tempFunc = function () {
 
 var isTempToCold = function (temp, relay) {
 	if ( temp <= _tempTrigger ) {
+		relay.off(_pinFan);
 		relay.off(_pinDeIcer);
 	} else {
+		relay.on(_pinFan);
 		relay.on(_pinDeIcer);
 	}
 } 
