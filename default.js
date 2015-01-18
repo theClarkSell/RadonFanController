@@ -8,7 +8,7 @@ console.log('Starting.....');
 
 var _app = express();
 
-var _tempTrigger = 90;
+var _tempTrigger = 68;
 var _intervalCheck = 5000;
 
 //pins
@@ -18,8 +18,6 @@ var _pinDeIcer = 18;
 
 var _override = false;
 
-
-
 async.parallel([
     function(callback) {
         gpio.setup(_pinFan, gpio.DIR_OUT, callback);
@@ -28,7 +26,7 @@ async.parallel([
     function(callback) {
         gpio.setup(_pinDeIcer, gpio.DIR_OUT, callback);
     },
-    
+
     function(callback) {
         gpio.setup(_pinLed, gpio.DIR_OUT, callback);
     }
@@ -44,7 +42,7 @@ async.parallel([
 
 function run() {
     pinInit([_pinFan, _pinDeIcer, _pinLed]);
-	gpio.write(_pinLed, true, writeComplete(_pinLed, 'led on'));
+	//gpio.write(_pinLed, true, writeComplete(_pinLed, 'led on'));
 
     setInterval(tempFunc, _intervalCheck);
 }
