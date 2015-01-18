@@ -79,20 +79,18 @@ var tempFunc = function () {
 
 var isTempToCold = function (temp, relay) {
 	if ( temp <= _tempTrigger ) {
-		relay.off(_pinFan);
+		relay.off(_pinDeIcer);
 	} else {
-		relay.on(_pinFan);
+		relay.on(_pinDeIcer);
 	}
 } 
 
 var relayController = {
 	on: function (pin) {  
-		console.log(pin);
 		gpio.write(pin, true, writeComplete(pin, 'on'));
 	},
 	
 	off: function (pin) { 
-		console.log(pin);
 		gpio.write(pin, false, writeComplete(pin, 'off'));
 	}
 }
