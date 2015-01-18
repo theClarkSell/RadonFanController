@@ -109,6 +109,14 @@ _app.get('/', function (req, res) {
   res.send('Hello World!');
 })
 
+_app.get('/fan/on', function (req, res) {
+  console.log('turning fan on');
+
+  relay.on(_pinFan);
+  
+  res.send('fans on');
+})
+
 var server = _app.listen(3000, function () {
 
   var host = server.address().address;
