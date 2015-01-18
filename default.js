@@ -107,7 +107,7 @@ var server = _app.listen(3000, function () {
 })
 
 //gracefull exit
-process.on('exit', function() {
+process.on('SIGINT', function() {
 	console.log("\nGracefully shutting down from SIGINT (Ctrl+C)");
    
 	gpio.destroy(function() {
