@@ -49,9 +49,9 @@ function run() {
 
 function pinInit(pinNumbers) {
 
-	for (pin in pinNumbers) {
-		gpio.write(pin, false, writeComplete(pin, 'off'));	
-	}
+	pinNumbers.forEach( function (element, index, array) {
+		gpio.write(element, false, writeComplete(element, 'off'));	
+	})
 
 	console.log('All pins set up');
 }
