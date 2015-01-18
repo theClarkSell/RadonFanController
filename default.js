@@ -1,8 +1,7 @@
 var async       = require('async');
 var express 	= require('express');
 var sense 		= require('ds18b20');
-//var gpio 		= require('rpi-gpio');
-var rpi 		= require('pi-gpio');
+var gpio 		= require('rpi-gpio');
 
 
 console.log('Starting.....');
@@ -10,37 +9,43 @@ console.log('Starting.....');
 var _app = express();
 
 var _tempTrigger = 90;
-var _intervalCheck = 10000;
+var _intervalCheck = 5000;
 
-//pings
-var _pinFan = 22;
-var _pinDeIcer = 00;
+//pins
+var _pinLed = 11;
+var _pinFan = 16;
+var _pinDeIcer = 18;
 
 var _override = false;
 
-function test () {
-	console.log('test');
-}
+async.parallel([
+    function(callback) {
+        gpio.setup(_pinFan, gpio.DIR_OUT, callback);
+    },
 
-rpi.open(11, "output", function(err) {     // Open pin 16 for output
-    rpi.write(11, 1, function() {          // Set pin 16 high (1)
-        rpi.close(11); // Close pin 16
-        console.log('hi');
-    });
+    function(callback) {
+        gpio.setup(11, gpio.DIR_OUT, callback);
+    }
+
+], function(err, results) {
+
+	setTimeout(function() {
+		console.log('waiting 5 seconds for pins to export');
+		run();
+	}, _intervalCheck);
+
 });
 
-/*
 function run() {
 
 	//Init all the pins
-    pinInit([_pinFan, 11]);
+    pinInit([_pinFan, _pinDeIcer, _pinLed]);
 
     //turn the LED on
-	gpio.write(11, true, writeComplete(11, 'led on'));
+	gpio.write(_pinLed, true, writeComplete(_pinLed, 'led on'));
 
     setInterval(tempFunc, _intervalCheck);
 }
-
 
 function pinInit(pinNumbers) {
 
@@ -54,21 +59,6 @@ function pinInit(pinNumbers) {
 function writeComplete (pinNumber, message) {
 	console.log('pin:', pinNumber, '--', message);
 }
-
-async.parallel([
-    function(callback) {
-        gpio.setup(_pinFan, gpio.DIR_OUT, callback);
-    },
-
-    function(callback) {
-        gpio.setup(11, gpio.DIR_OUT, callback);
-    }
-
-], function(err, results) {
-
-    //Kick off things...
-    run();
-});
 
 var tempFunc = function () {
 	console.log(Date.now(), '>> checking temp');
@@ -116,15 +106,12 @@ var server = _app.listen(3000, function () {
 
 })
 
-*/
-
 //gracefull exit
-process.on('SIGINT', function() {
-    console.log("\nGracefully shutting down from SIGINT (Ctrl+C)");
+process.on('exit', function() {
+	console.log("\nGracefully shutting down from SIGINT (Ctrl+C)");
    
-   	rpi.close(11); // Close pin 16
-
-    console.log("Exiting...");
-    process.exit();
-        
+	gpio.destroy(function() {
+		console.log('Closed pins, now exit');
+            return process.exit(0);
+    });        
 });
