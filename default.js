@@ -18,37 +18,7 @@ var _pinDeIcer = 18;
 
 var _override = false;
 
-var tempFunc = function () {
-	console.log(Date.now(), '>> checking temp');
 
-	sense.sensors(function(err, ids) {
-		sense.temperature(ids, function(err, value) {
-			var temp = value * 9 / 5 + 32;
-			console.log('Current temperature is: ', temp);
-
-			//Check the temp and kill the fan
-			isTempToCold(temp, relayController);
-		});
-	});
-}
-
-var isTempToCold = function (temp, relay) {
-	if ( temp <= _tempTrigger ) {
-		relay.off(_pinFan);
-	} else {
-		relay.on(_pinFan);
-	}
-} 
-
-var relayController = {
-	on: function (pin) {  
-		gpio.write(pin, true, writeComplete(pin, 'on'));
-	},
-	
-	off: function (pin) { 
-		gpio.write(pin, false, writeComplete(pin, 'off'));
-	}
-}
 
 async.parallel([
     function(callback) {
@@ -56,7 +26,11 @@ async.parallel([
     },
 
     function(callback) {
-        gpio.setup(11, gpio.DIR_OUT, callback);
+        gpio.setup(_pinDeIcer, gpio.DIR_OUT, callback);
+    },
+    
+    function(callback) {
+        gpio.setup(_pinLed, gpio.DIR_OUT, callback);
     }
 
 ], function(err, results) {
@@ -88,6 +62,37 @@ function writeComplete (pinNumber, message) {
 	console.log('pin:', pinNumber, '--', message);
 }
 
+var tempFunc = function () {
+	console.log(Date.now(), '>> checking temp');
+
+	sense.sensors(function(err, ids) {
+		sense.temperature(ids, function(err, value) {
+			var temp = value * 9 / 5 + 32;
+			console.log('Current temperature is: ', temp);
+
+			//Check the temp and kill the fan
+			isTempToCold(temp, relayController);
+		});
+	});
+}
+
+var isTempToCold = function (temp, relay) {
+	if ( temp <= _tempTrigger ) {
+		relay.off(_pinFan);
+	} else {
+		relay.on(_pinFan);
+	}
+} 
+
+var relayController = {
+	on: function (pin) {  
+		gpio.write(pin, true, writeComplete(pin, 'on'));
+	},
+	
+	off: function (pin) { 
+		gpio.write(pin, false, writeComplete(pin, 'off'));
+	}
+}
 
 //EXPRESS 
 _app.get('/', function (req, res) {
