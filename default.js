@@ -44,6 +44,7 @@ function run() {
     //turn the LED on
 	gpio.write(_pinLed, true, writeComplete(_pinLed, 'led on'));
 
+console.log('here???');
     setInterval(tempFunc, _intervalCheck);
 }
 
