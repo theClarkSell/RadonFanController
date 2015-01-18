@@ -18,49 +18,6 @@ var _pinDeIcer = 18;
 
 var _override = false;
 
-async.parallel([
-    function(callback) {
-        gpio.setup(_pinFan, gpio.DIR_OUT, callback);
-    },
-
-    function(callback) {
-        gpio.setup(11, gpio.DIR_OUT, callback);
-    }
-
-], function(err, results) {
-
-	setTimeout(function() {
-		console.log('waiting 5 seconds for pins to export');
-		run();
-	}, _intervalCheck);
-
-});
-
-function run() {
-
-	//Init all the pins
-    pinInit([_pinFan, _pinDeIcer, _pinLed]);
-
-    //turn the LED on
-	gpio.write(_pinLed, true, writeComplete(_pinLed, 'led on'));
-
-console.log('here???');
-    setInterval(tempFunc, _intervalCheck);
-}
-
-function pinInit(pinNumbers) {
-
-	pinNumbers.forEach( function (element, index, array) {
-		gpio.write(element, false, writeComplete(element, 'off'));	
-	})
-
-	console.log('All pins set up');
-}
-
-function writeComplete (pinNumber, message) {
-	console.log('pin:', pinNumber, '--', message);
-}
-
 var tempFunc = function () {
 	console.log(Date.now(), '>> checking temp');
 
@@ -93,6 +50,45 @@ var relayController = {
 	}
 }
 
+async.parallel([
+    function(callback) {
+        gpio.setup(_pinFan, gpio.DIR_OUT, callback);
+    },
+
+    function(callback) {
+        gpio.setup(11, gpio.DIR_OUT, callback);
+    }
+
+], function(err, results) {
+
+	setTimeout(function() {
+		console.log('waiting 5 seconds for pins to export');
+		run();
+	}, _intervalCheck);
+
+});
+
+function run() {
+    pinInit([_pinFan, _pinDeIcer, _pinLed]);
+	gpio.write(_pinLed, true, writeComplete(_pinLed, 'led on'));
+
+    setInterval(tempFunc, _intervalCheck);
+}
+
+function pinInit(pinNumbers) {
+
+	pinNumbers.forEach( function (element, index, array) {
+		gpio.write(element, false, writeComplete(element, 'off'));	
+	})
+
+	console.log('All pins set up');
+}
+
+function writeComplete (pinNumber, message) {
+	console.log('pin:', pinNumber, '--', message);
+}
+
+
 //EXPRESS 
 _app.get('/', function (req, res) {
   res.send('Hello World!');
@@ -103,7 +99,7 @@ var server = _app.listen(3000, function () {
   var host = server.address().address;
   var port = server.address().port;
 
-  console.log('Example app listening at http://%s:%s', host, port);
+  console.log('Radon Controller listening at http://%s:%s', host, port);
 
 })
 
