@@ -5,7 +5,6 @@ var gpio 		= require('rpi-gpio');
 
 console.log('Hello.....');
 
-var _app = express();
 
 var _fanThreshold = 70;
 var _deIcerThreshold = 69;
@@ -103,28 +102,6 @@ var relayController = {
 		gpio.write(pin, false, writeComplete(pin, 'off'));
 	}
 }
-
-//EXPRESS 
-_app.get('/', function (req, res) {
-  res.send('Hello World!');
-})
-
-_app.get('/fan/on', function (req, res) {
-  console.log('turning fan on');
-
-  relayController.on(_pinFan);
-  
-  res.send('fans on');
-})
-
-var server = _app.listen(3000, function () {
-
-  var host = server.address().address;
-  var port = server.address().port;
-
-  console.log('Radon Controller listening at http://%s:%s', host, port);
-
-})
 
 //gracefull exit
 process.on('SIGINT', function() {
