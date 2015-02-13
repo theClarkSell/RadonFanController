@@ -25,12 +25,12 @@ async.parallel([
 
 	if (err) return next(err);
 	run();
-/*
+	/*
 	setTimeout(function() {
 		console.log('waiting 5 seconds for pins to export');
 		run();
 	}, settings.checkInterval);
-*/
+	*/
 
 });
 
@@ -45,6 +45,7 @@ function pinInit() {
 	async.forEach(Object.keys(settings.gpio), function(pin, callback) { 
     	var pinNumber = settings.gpio[pin];
         gpio.write(pinNumber, false, writeComplete(pinNumber, 'off'));	
+        callback();
 
     }, function(err) {
         if (err) return next(err); //need to figure this out
