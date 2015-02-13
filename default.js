@@ -1,61 +1,57 @@
-var async       = require('async');
-var express 	= require('express');
-var sense 		= require('ds18b20');
-var gpio 		= require('rpi-gpio');
+var async       		= require('async');
+var express 			= require('express');
+var sense 				= require('ds18b20');
+var gpio 				= require('rpi-gpio');
+var controllerSettings 	= require('./controllerSettings');
 
-console.log('Hello.....');
+console.log('Started...');
 
-
-var _fanThreshold = 70;
-var _deIcerThreshold = 69;
-
-var _intervalCheck = 5000;
-
-//pins
-var _pinLed = 11;
-var _pinFan = 16;
-var _pinDeIcer = 18;
-var _pinNumbers = [_pinFan, _pinDeIcer, _pinLed];
+var settings = controllerSettings();
 
 async.parallel([
     function(callback) {
-        gpio.setup(_pinFan, gpio.DIR_OUT, callback);
+        gpio.setup(settings.gpio.fan, gpio.DIR_OUT, callback);
     },
 
     function(callback) {
-        gpio.setup(_pinDeIcer, gpio.DIR_OUT, callback);
+        gpio.setup(settings.gpio.deIcer, gpio.DIR_OUT, callback);
     },
 
     function(callback) {
-        gpio.setup(_pinLed, gpio.DIR_OUT, callback);
+        gpio.setup(settings.gpio.ledOn, gpio.DIR_OUT, callback);
     }
 
 ], function(err, results) {
 
+	if (err) return next(err);
+	run();
+/*
 	setTimeout(function() {
 		console.log('waiting 5 seconds for pins to export');
 		run();
-	}, _intervalCheck);
+	}, settings.checkInterval);
+*/
 
 });
 
 function run() {
-    pinInit(_pinNumbers);
-	
-	setTimeout(function() {
-		gpio.write(_pinLed, true, writeComplete(_pinLed, 'led on'));
-	}, 2000);
-
-    setInterval(tempFunc, _intervalCheck);
+    pinInit();
+    setInterval(tempFunc, settings.checkInterval);
 }
 
-function pinInit(pinNumbers) {
+//should pass in the pins so we can test better....
+function pinInit() {
 
-	pinNumbers.forEach( function (element, index, array) {
-		gpio.write(element, false, writeComplete(element, 'off'));	
-	})
+	async.forEach(Object.keys(settings.gpio), function(pin, callback) { 
+    	var pinNumber = settings.gpio[pin];
+        gpio.write(pinNumber, false, writeComplete(pinNumber, 'off'));	
 
-	console.log('All pins initalized');
+    }, function(err) {
+        if (err) return next(err); //need to figure this out
+    	
+    	console.log('All pins initalized');
+    	gpio.write(settings.gpio.ledOn, true, writeComplete(settings.gpio.ledOn, 'led on'));
+    });
 }
 
 function writeComplete (pinNumber, message) {
@@ -70,7 +66,7 @@ var tempFunc = function () {
 			var temp = value * 9 / 5 + 32;
 			console.log('Current temperature is: ', temp);
 
-			//Check the temp and kill the fan
+			//Check the temp and kill the fan // this could be pulled out into a callback
 			shouldFanBeRunning(temp, relayController);
 			shouldDeIcerBeRunning(temp, relayController);
 		});
@@ -78,18 +74,22 @@ var tempFunc = function () {
 }
 
 function shouldFanBeRunning(temp, relay) {
+	var fanPin = settings.gpio.fan;
+
 	if ( temp <= _fanThreshold ) {
-		relay.off(_pinFan);
+		relay.off(fanPin);
 	} else {
-		relay.on(_pinFan);
+		relay.on(fanPin);
 	}
 } 
 
 function shouldDeIcerBeRunning(temp, relay) {
+	var deIcer = settings.gpio.deIcer;
+
 	if ( temp <= _deIcerThreshold ) {
-		relay.off(_pinDeIcer);
+		relay.off(deIcer);
 	} else {
-		relay.on(_pinDeIcer);
+		relay.on(deIcer);
 	}
 } 
 
@@ -107,7 +107,7 @@ var relayController = {
 process.on('SIGINT', function() {
 	console.log("\nGracefully shutting down from SIGINT (Ctrl+C)");
    
-   	pinInit(_pinNumbers);
+   	pinInit();
 
 	gpio.destroy(function() {
 		console.log('Closed pins, now exit');

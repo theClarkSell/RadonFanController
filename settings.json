@@ -1,0 +1,12 @@
+
+{
+	"fanThreshold": "70",
+	"deIcerThreshold": "69",
+	"checkInterval": "5000",
+	"pushNotificaitonUrl": "http://test.com/test",
+	"gpio": {
+		"fan": "16",
+		"deIcer": "18",
+		"ledOn": "11"
+	}
+}
