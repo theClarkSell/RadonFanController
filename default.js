@@ -74,9 +74,10 @@ var tempFunc = function () {
 }
 
 function shouldFanBeRunning(temp, relay) {
-	var fanPin = settings.gpio.fan;
+	var fanPin = settings.gpio.fan,
+		threshold = settings.fanThreshold;
 
-	if ( temp <= _fanThreshold ) {
+	if ( temp <= threshold ) {
 		relay.off(fanPin);
 	} else {
 		relay.on(fanPin);
@@ -84,9 +85,10 @@ function shouldFanBeRunning(temp, relay) {
 } 
 
 function shouldDeIcerBeRunning(temp, relay) {
-	var deIcer = settings.gpio.deIcer;
+	var deIcer = settings.gpio.deIcer,
+		threshold = settings.fanThreshold;
 
-	if ( temp <= _deIcerThreshold ) {
+	if ( temp <= threshold ) {
 		relay.off(deIcer);
 	} else {
 		relay.on(deIcer);
