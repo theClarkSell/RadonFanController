@@ -1,5 +1,7 @@
 var http 		= require('http');
 var https 		= require('https');
+var crypto = require('crypto')
+
 var deployer 	= require('github-webhook-deployer');
 
 // http://myexternalip.com/json
@@ -41,6 +43,9 @@ exports.setupWebHook = function (accessToken) {
 //this assumes you already have one setup and you're just updating the address
 function createWebHook(ipAddress, accessToken) {
 
+	var key = 'rpiAutoUpdateSecret',
+		hash;
+
 	var post_data = {
 		"name": "web",
 		"active": true,
@@ -53,7 +58,10 @@ function createWebHook(ipAddress, accessToken) {
 		}
 	};
 
-	var post_length = JSON.stringify(post_data).length;
+	var post_payload = JSON.stringify(post_data);
+	var post_length = post_payload.length;
+
+	hash = crypto.createHmac('sha1', key).update(post_payload).digest('hex')
 
 	var post_options = {
 		host: 'api.github.com',
@@ -64,7 +72,7 @@ function createWebHook(ipAddress, accessToken) {
 		  'Content-Length': post_length,
 		  'User-Agent': 'RPI-AutoUpdater',
 		  'Authorization': 'token ' + accessToken,
-		  'X-Hub-Signature': 'rpiAutoUpdateSecret'
+		  'X-Hub-Signature':  "sha1=" + hash
 		}
   	};
 
