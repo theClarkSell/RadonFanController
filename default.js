@@ -71,8 +71,8 @@ function tempFunc () {
 	sense.sensors(function(err, ids) {
 		sense.temperature(ids, function(err, value) {
 			var temp = value * 9 / 5 + 32;
-			temp = temp.toPrecision();
-			
+			temp = temp.toFixed(0);
+
 			console.log('Current temperature is: ', temp);
 
 			//log temp to m2x
