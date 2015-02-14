@@ -43,7 +43,7 @@ async.parallel([
 
 function run() {
     pinInit();
-	gitHooks.setupWebHooks();
+	gitHooks.setupWebHook();
     setInterval(tempFunc, settings.checkInterval);
 }
 
