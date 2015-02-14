@@ -87,19 +87,17 @@ function postToM2x(temp) {
 	//http://api-m2x.att.com/v2/devices/e5e13be8507752e3487f62ab97da6965/streams/temperature/values" -d '[{"value": 30, "timestamp": "2014-07-16T02:55:12.345Z"}]' -H "Content-Type: application/json" -H "X-M2X-KEY: <API_KEY>
 
 	var post_data = {
-		"value": 10, 
-		"timestamp": "2014-07-16T02:55:12.345Z"
+		"value": 10
 	};
 
 	var post_options = {
 			host: 'api-m2x.att.com',
 			port: '80',
-			path: '/v2/devices/6db7bd071d27c8baccb77c544a3ceeaa/streams/temp/values',
+			path: '/v2/devices/6db7bd071d27c8baccb77c544a3ceeaa/streams/temp/value',
 			method: 'PUT',
 			headers: {
 			  'Content-Type': 'application/json',
-			  'X-M2X-KEY': '82a2c1052b94a2ea4522ceabc864492d',
-			  'Content-Length': post_data.length
+			  'X-M2X-KEY': '82a2c1052b94a2ea4522ceabc864492d'
 			}
   	};
 
