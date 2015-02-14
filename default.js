@@ -86,8 +86,9 @@ function tempFunc () {
 function postToM2x(temp) {
 	
 	var post_data = {
-		value: temp
+		"value": "30"
 	};
+	var post_length = JSON.stringify(post_data).length;
 
 	var post_options = {
 			host: 'api-m2x.att.com',
@@ -97,7 +98,7 @@ function postToM2x(temp) {
 			headers: {
 			  'Content-Type': 'application/json',
 			  'X-M2X-KEY': '82a2c1052b94a2ea4522ceabc864492d',
-			  'Content-Length': post_data.length
+			  'Content-Length': post_length
 			}
   	};
 
@@ -111,7 +112,7 @@ function postToM2x(temp) {
 
 	// post
 	console.log(JSON.stringify(post_data));
-	
+
 	post_req.write(JSON.stringify(post_data));
 	post_req.end();
 
