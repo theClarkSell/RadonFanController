@@ -3,7 +3,7 @@ var argv 				= require('minimist')(process.argv.slice(2));
 
 console.log(argv);
 
-//just a test
+//dsfgsdjust a test
 
 
 //gitSetup.setupWebHook();
