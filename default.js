@@ -84,8 +84,6 @@ function tempFunc () {
 }
 
 function postToM2x(temp) {
-
-
 	//http://api-m2x.att.com/v2/devices/e5e13be8507752e3487f62ab97da6965/streams/temperature/values" -d '[{"value": 30, "timestamp": "2014-07-16T02:55:12.345Z"}]' -H "Content-Type: application/json" -H "X-M2X-KEY: <API_KEY>
 
 	var post_data = {
@@ -113,9 +111,9 @@ function postToM2x(temp) {
 		});
 	});
 
-	  // post the data
-	  post_req.write(post_data);
-	  post_req.end();
+	// post
+	post_req.write(JSON.stringify(post_data));
+	post_req.end();
 
 }
 
