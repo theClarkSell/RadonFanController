@@ -97,7 +97,8 @@ function postToM2x(temp) {
 			method: 'PUT',
 			headers: {
 			  'Content-Type': 'application/json',
-			  'X-M2X-KEY': '82a2c1052b94a2ea4522ceabc864492d'
+			  'X-M2X-KEY': '82a2c1052b94a2ea4522ceabc864492d',
+			  'Content-Length': post_data.length
 			}
   	};
 
