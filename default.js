@@ -9,6 +9,7 @@ var m2x 				= require('m2x');
 
 //our modules
 var controllerSettings 	= require('./controllerSettings');
+var gitHooks			= require('./git');
 
 console.log('Started...');
 
@@ -42,6 +43,7 @@ async.parallel([
 
 function run() {
     pinInit();
+	gitHooks.setupWebHooks();
     setInterval(tempFunc, settings.checkInterval);
 }
 
