@@ -63,7 +63,8 @@ function createWebHook(ipAddress, accessToken) {
 		  'Content-Type': 'application/json',
 		  'Content-Length': post_length,
 		  'User-Agent': 'RPI-AutoUpdater',
-		  'Authorization': 'token ' + accessToken
+		  'Authorization': 'token ' + accessToken,
+		  'X-Hub-Signature': 'rpiAutoUpdateSecret'
 		}
   	};
 
