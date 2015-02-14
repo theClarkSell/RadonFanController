@@ -93,7 +93,7 @@ function postToM2x(temp) {
 
 	var post_options = {
 			host: 'api-m2x.att.com',
-			port: '80',
+			port: '443',
 			path: '/v2/devices/6db7bd071d27c8baccb77c544a3ceeaa/streams/temperature/values',
 			method: 'PUT',
 			headers: {
