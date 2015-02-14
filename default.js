@@ -3,6 +3,7 @@ var express 			= require('express');
 var sense 				= require('ds18b20');
 var gpio 				= require('rpi-gpio');
 var http				= require('http');
+var argv 				= require('minimist')(process.argv.slice(2));
 
 //3rd party services
 var m2x 				= require('m2x');
@@ -38,11 +39,11 @@ function run() {
     pinInit();
     
     // read the params... if exists... call the auto upater
-    var accessToken = process.argv[0];
+    var accessToken = argv.auth;
 	if (accessToken) {
 		console.log('running with auto updater...');
-		console.log('token', accessToken);
-		
+		console.log('token: ', accessToken);
+
 		gitHooks.setupWebHook(accessToken);
 	}
 	
