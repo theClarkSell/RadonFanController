@@ -62,7 +62,7 @@ function createWebHook(ipAddress) {
 		  'Content-Type': 'application/json',
 		  'Content-Length': post_length,
 		  'User-Agent': 'RPI-AutoUpdater',
-		  'Authorization': 'token b8ee0eddc07cdaf49d100b15701bb718a49735d7'
+		  'Authorization': 'token c5e02d6987184216799722dd7a2e511c2a267809'
 		}
   	};
 
