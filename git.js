@@ -87,7 +87,7 @@ function createGitListener() {
 	console.log('deployer listening on port ' + deployerPort);
 
 	var depServer = http.createServer(deployer({
-		path:'/webhook'
-		//secret : 'testSecret'
+		path:'/webhook',
+		secret : 'rpiAutoUpdateSecret'
 	})).listen(deployerPort);
 }
