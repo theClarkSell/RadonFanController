@@ -63,8 +63,7 @@ function createWebHook(ipAddress, accessToken) {
 	var post_length = post_payload.length;
 
 	hash = crypto.createHmac('sha1', key).update(post_payload).digest('hex')
-	console.log('hash: ' + hash);
-
+	
 	var post_options = {
 		host: 'api.github.com',
 		path: '/repos/csell5/RadonFanController/hooks',
