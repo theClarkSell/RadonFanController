@@ -85,9 +85,12 @@ function tempFunc () {
 
 function postToM2x(temp) {
 	
-	var lastTemp = temp;
+	var lastTemp;
 
 	if (temp !== lastTemp) {
+		
+		lastTemp = temp;
+
 		var post_data = {
 			value: temp
 		};
@@ -117,7 +120,7 @@ function postToM2x(temp) {
 		post_req.write(JSON.stringify(post_data));
 		post_req.end();
 	}
-	
+
 }
 
 function shouldFanBeRunning(temp, relay) {
