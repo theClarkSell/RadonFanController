@@ -54,7 +54,8 @@ function createWebHook(ipAddress, accessToken) {
 		],
 		"config": {
 			"url": "http://" + ipAddress + ":50000/webhook",
-			"content_type": "json"
+			"content_type": "json",
+			"secret": "rpiAutoUpdateSecret",
 		}
 	};
 
@@ -62,6 +63,7 @@ function createWebHook(ipAddress, accessToken) {
 	var post_length = post_payload.length;
 
 	hash = crypto.createHmac('sha1', key).update(post_payload).digest('hex')
+	console.log('hash:', hash);
 
 	var post_options = {
 		host: 'api.github.com',
@@ -71,8 +73,8 @@ function createWebHook(ipAddress, accessToken) {
 		  'Content-Type': 'application/json',
 		  'Content-Length': post_length,
 		  'User-Agent': 'RPI-AutoUpdater',
-		  'Authorization': 'token ' + accessToken,
-		  'X-Hub-Signature':  "sha1=" + hash
+		  'Authorization': 'token ' + accessToken
+		  //'X-Hub-Signature':  "sha1=" + hash
 		}
   	};
 
