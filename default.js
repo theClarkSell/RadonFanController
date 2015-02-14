@@ -36,7 +36,14 @@ async.parallel([
 
 function run() {
     pinInit();
-	gitHooks.setupWebHook(settings.autoUpdateToken);
+    
+    // read the params... if exists... call the auto upater
+    var accessToken = process.argv[1];
+	if (accessToken) {
+		console.log('running with auto updater...');
+		gitHooks.setupWebHook(accessToken);
+	}
+	
     setInterval(tempFunc, settings.checkInterval);
 }
 
