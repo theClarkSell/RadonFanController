@@ -30,15 +30,16 @@ function getExternalAddress(callback) {
 	request.end();
 }
 
-exports.setupWebHook = function () {
+exports.setupWebHook = function (accessToken) {
 
 	getExternalAddress( function(ipAddress) {
-		createWebHook(ipAddress);
+		createWebHook(ipAddress, accessToken);
+		createGitListener();
 	});
 }
 
 //this assumes you already have one setup and you're just updating the address
-function createWebHook(ipAddress) {
+function createWebHook(ipAddress, accessToken) {
 
 	var post_data = {
 		"name": "web",
@@ -62,7 +63,7 @@ function createWebHook(ipAddress) {
 		  'Content-Type': 'application/json',
 		  'Content-Length': post_length,
 		  'User-Agent': 'RPI-AutoUpdater',
-		  'Authorization': 'token c5e02d6987184216799722dd7a2e511c2a267809'
+		  'Authorization': 'token ' + accessToken
 		}
   	};
 
@@ -71,7 +72,6 @@ function createWebHook(ipAddress) {
 		res.setEncoding('utf8');
 		res.on('data', function (chunk) {
 			console.log('GitHub Response: ' + chunk);
-			createGitListener();
 		});
 	});
 

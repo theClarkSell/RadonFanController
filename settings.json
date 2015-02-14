@@ -1,5 +1,6 @@
 
 {
+	"autoUpdateToken": "d195c97b56e94204c1e1d71cd8846ce57c1d0ac2",
 	"fanThreshold": "70",
 	"deIcerThreshold": "69",
 	"checkInterval": "5000",

@@ -32,18 +32,11 @@ async.parallel([
 
 	if (err) return next(err);
 	run();
-	/*
-	setTimeout(function() {
-		console.log('waiting 5 seconds for pins to export');
-		run();
-	}, settings.checkInterval);
-	*/
-
 });
 
 function run() {
     pinInit();
-	gitHooks.setupWebHook();
+	gitHooks.setupWebHook(settings.autoUpdateToken);
     setInterval(tempFunc, settings.checkInterval);
 }
 
