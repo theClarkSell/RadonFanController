@@ -1,3 +1,9 @@
-var gitSetup = require('./git');
+//var gitSetup = require('./git');
+var argv 				= require('minimist')(process.argv.slice(2));
 
-gitSetup.setupWebHook();
+console.log(argv);
+
+//just a test
+
+
+//gitSetup.setupWebHook();
