@@ -2,6 +2,12 @@ var async       		= require('async');
 var express 			= require('express');
 var sense 				= require('ds18b20');
 var gpio 				= require('rpi-gpio');
+var http				= require('http');
+
+//3rd party services
+var m2x 				= require('m2x');
+
+//our modules
 var controllerSettings 	= require('./controllerSettings');
 
 console.log('Started...');
@@ -59,7 +65,7 @@ function writeComplete (pinNumber, message) {
 	console.log('pin:', pinNumber, '--', message);
 }
 
-var tempFunc = function () {
+function tempFunc () {
 	console.log(Date.now(), '>> checking temp');
 
 	sense.sensors(function(err, ids) {
@@ -67,11 +73,50 @@ var tempFunc = function () {
 			var temp = value * 9 / 5 + 32;
 			console.log('Current temperature is: ', temp);
 
+			//log temp to m2x
+			postToM2x(temp);
+
 			//Check the temp and kill the fan // this could be pulled out into a callback
 			shouldFanBeRunning(temp, relayController);
 			shouldDeIcerBeRunning(temp, relayController);
 		});
 	});
+}
+
+function postToM2x(temp) {
+
+
+	//http://api-m2x.att.com/v2/devices/e5e13be8507752e3487f62ab97da6965/streams/temperature/values" -d '[{"value": 30, "timestamp": "2014-07-16T02:55:12.345Z"}]' -H "Content-Type: application/json" -H "X-M2X-KEY: <API_KEY>
+
+	var post_data = {
+		"value": temp, 
+		"timestamp": new Date()
+	};
+
+	var post_options = {
+			host: 'api-m2x.att.com',
+			port: '80',
+			path: '/v2/devices/e5e13be8507752e3487f62ab97da6965/streams/temperature/values',
+			method: 'PUT',
+			headers: {
+			  'Content-Type': 'application/json',
+			  'X-M2X-KEY': '82a2c1052b94a2ea4522ceabc864492d',
+			  'Content-Length': post_data.length
+			}
+  	};
+
+	// Set up the request
+	var post_req = http.request(post_options, function(res) {
+		res.setEncoding('utf8');
+		res.on('data', function (chunk) {
+			console.log('Response: ' + chunk);
+		});
+	});
+
+	  // post the data
+	  post_req.write(post_data);
+	  post_req.end();
+
 }
 
 function shouldFanBeRunning(temp, relay) {
