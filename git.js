@@ -1,6 +1,6 @@
 var http 		= require('http');
 var https 		= require('https');
-var crypto = require('crypto')
+var crypto 		= require('crypto')
 
 var deployer 	= require('github-webhook-deployer');
 
@@ -44,7 +44,7 @@ exports.setupWebHook = function (accessToken) {
 function createWebHook(ipAddress, accessToken) {
 
 	var key = 'rpiAutoUpdateSecret',
-		hash;
+		hash = null;
 
 	var post_data = {
 		"name": "web",
@@ -63,7 +63,7 @@ function createWebHook(ipAddress, accessToken) {
 	var post_length = post_payload.length;
 
 	hash = crypto.createHmac('sha1', key).update(post_payload).digest('hex')
-	console.log('hash:', hash);
+	console.log('hash: ' + hash);
 
 	var post_options = {
 		host: 'api.github.com',
@@ -74,7 +74,7 @@ function createWebHook(ipAddress, accessToken) {
 		  'Content-Length': post_length,
 		  'User-Agent': 'RPI-AutoUpdater',
 		  'Authorization': 'token ' + accessToken
-		  //'X-Hub-Signature':  "sha1=" + hash
+		  'X-Hub-Signature':  "sha1=" + hash
 		}
   	};
 
@@ -86,7 +86,7 @@ function createWebHook(ipAddress, accessToken) {
 		});
 	});
 
-	post_req.write(JSON.stringify(post_data));
+	post_req.write(post_payload);
 	post_req.end();
 }
 
