@@ -38,9 +38,11 @@ function run() {
     pinInit();
     
     // read the params... if exists... call the auto upater
-    var accessToken = process.argv[1];
+    var accessToken = process.argv[0];
 	if (accessToken) {
 		console.log('running with auto updater...');
+		console.log('token', accessToken);
+		
 		gitHooks.setupWebHook(accessToken);
 	}
 	
