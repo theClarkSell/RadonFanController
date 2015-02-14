@@ -110,10 +110,15 @@ var relayController = {
 process.on('SIGINT', function() {
 	console.log("\nGracefully shutting down from SIGINT (Ctrl+C)");
    
-   	pinInit();
+	async.forEach(Object.keys(settings.gpio), function(pin, callback) { 
+    	var pinNumber = settings.gpio[pin];
+        gpio.write(pinNumber, false, writeComplete(pinNumber, 'off'));	
+        callback();
 
-	gpio.destroy(function() {
-		console.log('Closed pins, now exit');
+    }, function(err) {
+        gpio.destroy(function() {
+			console.log('Closed pins, now exit');
             return process.exit(0);
-    });        
+    	});        
+    });
 });
