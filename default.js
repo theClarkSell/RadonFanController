@@ -83,9 +83,9 @@ function tempFunc () {
 	});
 }
 
+var lastTemp;
+
 function postToM2x(temp) {
-	
-	var lastTemp;
 
 	if (temp !== lastTemp) {
 		
