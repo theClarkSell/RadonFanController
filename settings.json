@@ -4,6 +4,10 @@
 	"deIcerThreshold": "69",
 	"checkInterval": "5000",
 	"pushNotificaitonUrl": "http://test.com/test",
+	"tempSensors"{
+		"outDoor": "28-0000069695fa",
+		"stack": "28-00000698151e",
+	},
 	"gpio": {
 		"fan": "16",
 		"deIcer": "18",

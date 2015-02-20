@@ -70,11 +70,44 @@ function writeComplete (pinNumber, message) {
 	console.log('pin:', pinNumber, '--', message);
 }
 
+function calculateTemp(value){
+	var temp = value * 9 / 5 + 32;
+	temp = temp.toFixed(0);
+
+	return temp;
+}
+
 function tempFunc () {
 	console.log(Date.now(), '>> checking temp');
 
+	sense.temperature(settings.tempSensors.outDoor, function(err, value) {
+
+		var temp = calculateTemp(value);
+
+		console.log('Current temperature is: ', temp);
+
+		//log temp to m2x
+		postToM2x('outdoorTemp', temp);
+
+		//Check the temp and kill the fan // this could be pulled out into a callback
+		shouldFanBeRunning(temp, relayController);
+		shouldDeIcerBeRunning(temp, relayController);
+	});
+
+	sense.temperature(settings.tempSensors.stack, function(err, value) {
+
+		var temp = calculateTemp(value);
+		console.log('Stack temperature is: ', temp);
+
+		//log temp to m2x
+		postToM2x('stackTemp', temp);
+	});
+
+/*
 	sense.sensors(function(err, ids) {
 		sense.temperature(ids, function(err, value) {
+
+
 			var temp = value * 9 / 5 + 32;
 			temp = temp.toFixed(0);
 
@@ -88,11 +121,12 @@ function tempFunc () {
 			shouldDeIcerBeRunning(temp, relayController);
 		});
 	});
+*/
 }
 
 var lastTemp;
 
-function postToM2x(temp) {
+function postToM2x(stream, temp) {
 
 	if (temp !== lastTemp) {
 		
@@ -107,7 +141,7 @@ function postToM2x(temp) {
 		var post_options = {
 			host: 'api-m2x.att.com',
 			port: '80',
-			path: '/v2/devices/6db7bd071d27c8baccb77c544a3ceeaa/streams/temp/value',
+			path: '/v2/devices/6db7bd071d27c8baccb77c544a3ceeaa/streams/' + stream + '/value',
 			method: 'PUT',
 			headers: {
 			  'Content-Type': 'application/json',
