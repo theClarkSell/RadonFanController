@@ -123,6 +123,38 @@ function tempFunc () {
 
 }
 
+function everliveAuth() {
+	var user = {
+    	"username": "apiAccess",
+    	"password": "password",
+    	"grant_type": "password"
+	};
+
+	var post_length = JSON.stringify(post_data).length;
+
+	var post_options = {
+		host: 'api.everlive.com',
+		port: '443',
+		path: 'v1/XxNT7WRnd3pbqZz5/oauth/token',
+		method: 'POST',
+		headers: {
+		  'Content-Type': 'application/json',
+		  'Content-Length': post_length
+		}
+  	};
+
+	// Set up the request
+	var post_req = https.request(post_options, function(res) {
+		res.setEncoding('utf8');
+		res.on('data', function (chunk) {
+			console.log('Everlive Auth Response: ' + chunk);
+		});
+	});
+
+	post_req.write(JSON.stringify(post_data));
+	post_req.end();
+}
+
 function postToEverlive(stackTemp, outdoorTemp, psi) {
 	var post_data = {
 		IndoorTemp: stackTemp,
@@ -137,10 +169,9 @@ function postToEverlive(stackTemp, outdoorTemp, psi) {
 		host: 'api.everlive.com',
 		port: '443',
 		path: '/v1/XxNT7WRnd3pbqZz5/StackStatus',
-		method: 'PUT',
+		method: 'POST',
 		headers: {
-		  'Content-Type': 'application/json',
-		  'Authorization': 'XxNT7WRnd3pbqZz5',
+		  'Content-Type': 'application/json'
 		  'Content-Length': post_length
 		}
   	};
