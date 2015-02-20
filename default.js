@@ -3,6 +3,7 @@ var express 			= require('express');
 var sense 				= require('ds18b20');
 var gpio 				= require('rpi-gpio');
 var http				= require('http');
+var https				= require('https');
 var consoleColors		= require('colors');
 var argv 				= require('minimist')(process.argv.slice(2));
 
@@ -79,57 +80,84 @@ function calculateTemp(value){
 }
 
 var lastOutdoorTemp, 
-	lastStackTemp;
+	outdoorTemp,
+	lastStackTemp,
+	stackTemp;
 
 function tempFunc () {
 	console.log(Date.now(), '>> checking temp');
 
 	sense.temperature(settings.tempSensors.stack, function(err, value) {
 
-		var temp = calculateTemp(value);
-		console.log('Stack temperature is: ', temp.green);
+		var stackTemp = calculateTemp(value);
+		console.log('Stack temperature is: ', stackTemp.green);
 
-		if (lastStackTemp !== temp) {
-			lastStackTemp = temp;
-			postToM2x('stackTemp', temp);	
+		if (lastStackTemp !== stackTemp) {
+			lastStackTemp = stackTemp;
+			postToM2x('stackTemp', stackTemp);	
 		}
 		
 	});
 
 	sense.temperature(settings.tempSensors.outDoor, function(err, value) {
 
-		var temp = calculateTemp(value);
-		console.log('Current temperature is: ', temp.green);
+		var outdoorTemp = calculateTemp(value);
+		console.log('Current temperature is: ', outdoorTemp.green);
 
-		if (lastOutdoorTemp !== temp) {
-			lastOutdoorTemp = temp;
-			postToM2x('outdoorTemp', temp);	
+		if (lastOutdoorTemp !== outdoorTemp) {
+			lastOutdoorTemp = outdoorTemp;
+			postToM2x('outdoorTemp', outdoorTemp);	
 		}
 		
 		//Check the temp and kill the fan // this could be pulled out into a callback
-		shouldFanBeRunning(temp, relayController);
-		shouldDeIcerBeRunning(temp, relayController);
+		shouldFanBeRunning(outdoorTemp, relayController);
+		shouldDeIcerBeRunning(outdoorTemp, relayController);
 	});
+
+	postToEverlive(stackTemp, outdoorTemp, '21');
+
 /*
 	sense.sensors(function(err, ids) {
-		sense.temperature(ids, function(err, value) {
-
-
-			var temp = value * 9 / 5 + 32;
-			temp = temp.toFixed(0);
-
-			console.log('Current temperature is: ', temp);
-
-			//log temp to m2x
-			postToM2x(temp);
-
-			//Check the temp and kill the fan // this could be pulled out into a callback
-			shouldFanBeRunning(temp, relayController);
-			shouldDeIcerBeRunning(temp, relayController);
-		});
 	});
 */
+
 }
+
+function postToEverlive(stackTemp, outdoorTemp, psi) {
+	var post_data = {
+		IndoorTemp: stackTemp,
+		OutdoorTemp: outdoorTemp,
+		PSI: psi,
+		Device: 'test'
+	}
+
+	var post_length = JSON.stringify(post_data).length;
+
+	var post_options = {
+		host: 'api.everlive.com',
+		port: '443',
+		path: '/v1/XxNT7WRnd3pbqZz5/StackStatus',
+		method: 'PUT',
+		headers: {
+		  'Content-Type': 'application/json',
+		  'Authorization': 'XxNT7WRnd3pbqZz5',
+		  'Content-Length': post_length
+		}
+  	};
+
+	// Set up the request
+	var post_req = https.request(post_options, function(res) {
+		res.setEncoding('utf8');
+		res.on('data', function (chunk) {
+			console.log('Everlive Response: ' + chunk);
+		});
+	});
+
+	post_req.write(JSON.stringify(post_data));
+	post_req.end();
+
+}
+
 
 function postToM2x(stream, temp) {
 
