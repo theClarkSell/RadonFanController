@@ -3,6 +3,7 @@ var express 			= require('express');
 var sense 				= require('ds18b20');
 var gpio 				= require('rpi-gpio');
 var http				= require('http');
+var consoleColors		= require('colors');
 var argv 				= require('minimist')(process.argv.slice(2));
 
 //3rd party services
@@ -86,7 +87,7 @@ function tempFunc () {
 	sense.temperature(settings.tempSensors.stack, function(err, value) {
 
 		var temp = calculateTemp(value);
-		console.log('Stack temperature is: ', temp);
+		console.log('Stack temperature is: ', temp.green);
 
 		if (lastStackTemp !== temp) {
 			lastStackTemp = temp;
@@ -98,7 +99,7 @@ function tempFunc () {
 	sense.temperature(settings.tempSensors.outDoor, function(err, value) {
 
 		var temp = calculateTemp(value);
-		console.log('Current temperature is: ', temp);
+		console.log('Current temperature is: ', temp.green);
 
 		if (lastOutdoorTemp !== temp) {
 			lastOutdoorTemp = temp;
