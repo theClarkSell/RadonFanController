@@ -83,6 +83,18 @@ var lastOutdoorTemp,
 function tempFunc () {
 	console.log(Date.now(), '>> checking temp');
 
+	sense.temperature(settings.tempSensors.stack, function(err, value) {
+
+		var temp = calculateTemp(value);
+		console.log('Stack temperature is: ', temp);
+
+		if (lastStackTemp !== temp) {
+			lastStackTemp = temp;
+			postToM2x('stackTemp', temp);	
+		}
+		
+	});
+
 	sense.temperature(settings.tempSensors.outDoor, function(err, value) {
 
 		var temp = calculateTemp(value);
@@ -97,19 +109,6 @@ function tempFunc () {
 		shouldFanBeRunning(temp, relayController);
 		shouldDeIcerBeRunning(temp, relayController);
 	});
-
-	sense.temperature(settings.tempSensors.stack, function(err, value) {
-
-		var temp = calculateTemp(value);
-		console.log('Stack temperature is: ', temp);
-
-		if (lastStackTemp !== temp) {
-			lastStackTemp = temp;
-			postToM2x('stackTemp', temp);	
-		}
-		
-	});
-
 /*
 	sense.sensors(function(err, ids) {
 		sense.temperature(ids, function(err, value) {
