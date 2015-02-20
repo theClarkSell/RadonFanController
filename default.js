@@ -171,7 +171,7 @@ function postToEverlive(stackTemp, outdoorTemp, psi) {
 		path: '/v1/XxNT7WRnd3pbqZz5/StackStatus',
 		method: 'POST',
 		headers: {
-		  'Content-Type': 'application/json'
+		  'Content-Type': 'application/json',
 		  'Content-Length': post_length
 		}
   	};
