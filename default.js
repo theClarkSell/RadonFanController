@@ -89,7 +89,7 @@ function tempFunc () {
 
 	sense.temperature(settings.tempSensors.stack, function(err, value) {
 
-		var stackTemp = calculateTemp(value);
+		stackTemp = calculateTemp(value);
 		console.log('Stack temperature is: ', stackTemp.green);
 
 		if (lastStackTemp !== stackTemp) {
@@ -101,7 +101,7 @@ function tempFunc () {
 
 	sense.temperature(settings.tempSensors.outDoor, function(err, value) {
 
-		var outdoorTemp = calculateTemp(value);
+		outdoorTemp = calculateTemp(value);
 		console.log('Current temperature is: ', outdoorTemp.green);
 
 		if (lastOutdoorTemp !== outdoorTemp) {
