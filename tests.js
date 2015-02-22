@@ -3,10 +3,10 @@ var ADC = require('adc-pi-gpio'),
         tolerance : 2,
         interval : 300,
         channels : [ 0 ],
-        SPICLK: 18,
-        SPIMISO: 23,
-        SPIMOSI: 24,
-        SPICS: 25
+        SPICLK: 12,
+        SPIMISO: 16,
+        SPIMOSI: 18,
+        SPICS: 22
     };
  
 var adc = new ADC(config);
