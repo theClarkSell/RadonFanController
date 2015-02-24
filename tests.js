@@ -31,5 +31,8 @@ adc.on('close', function() {
 });
 
 adc.on('change', function(data) {
+
+    //Pressure((((adc+0.3)/255)-0.04)/0.009)
+    console.log("caculated", ((((data.value + 0.3) / 255) - 0.04) / 0.009) );
     console.log('Channel ' + data.channel + ' value is now ' + data.value + ' which in proportion is: ' + data.percent);
 });
