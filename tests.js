@@ -2,7 +2,7 @@ var ADC = require('adc-pi-gpio'),
     config = {
         tolerance : 2,
         interval : 300,
-        channels : [ 0, 1, 2 ],
+        channels : [ 0 ],
         SPICLK: 12,
         SPIMISO: 16,
         SPIMOSI: 18,
