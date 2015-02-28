@@ -12,8 +12,8 @@ var m2x 				= require('m2x');
 
 //our modules
 var controllerSettings 	= require('./controllerSettings');
-var gitHooks			= require('./git');
 var adc					= require('./adc');
+var gitHooks			= require('./git');
 var m2x					= require('./m2x');
 var everlive 			= require('./everlive');
 
