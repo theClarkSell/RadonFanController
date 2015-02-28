@@ -13,6 +13,9 @@ var m2x 				= require('m2x');
 //our modules
 var controllerSettings 	= require('./controllerSettings');
 var gitHooks			= require('./git');
+var adc					= require('./adc');
+var m2x					= require('./m2x');
+var everlive 			= require('./everlive');
 
 console.log('Started...');
 
@@ -68,6 +71,15 @@ function pinInit() {
     });
 }
 
+var currentVaccum = 0;
+
+adc.on('change', function(data) {
+    console.log('TEST::: Channel ' + data.channel + ' value is now ' + data.value + ' which in proportion is: ' + data.percent);
+    
+    currentVaccum = data.percent;
+
+});
+
 function writeComplete (pinNumber, message) {
 	console.log('pin:', pinNumber, '--', message);
 }
@@ -94,7 +106,7 @@ function tempFunc () {
 
 		if (lastStackTemp !== stackTemp) {
 			lastStackTemp = stackTemp;
-			postToM2x('stackTemp', stackTemp);	
+			m2x.post('stackTemp', stackTemp);	
 		}
 		
 	});
@@ -106,7 +118,7 @@ function tempFunc () {
 
 		if (lastOutdoorTemp !== outdoorTemp) {
 			lastOutdoorTemp = outdoorTemp;
-			postToM2x('outdoorTemp', outdoorTemp);	
+			m2x.post('outdoorTemp', outdoorTemp);	
 		}
 		
 		//Check the temp and kill the fan // this could be pulled out into a callback
@@ -114,115 +126,13 @@ function tempFunc () {
 		shouldDeIcerBeRunning(outdoorTemp, relayController);
 	});
 
-	postToEverlive(stackTemp, outdoorTemp, '21');
-
-/*
-	sense.sensors(function(err, ids) {
-	});
-*/
-
-}
-
-function everliveAuth() {
-	var user = {
-    	"username": "apiAccess",
-    	"password": "password",
-    	"grant_type": "password"
-	};
-
-	var post_length = JSON.stringify(post_data).length;
-
-	var post_options = {
-		host: 'api.everlive.com',
-		port: '443',
-		path: 'v1/XxNT7WRnd3pbqZz5/oauth/token',
-		method: 'POST',
-		headers: {
-		  'Content-Type': 'application/json',
-		  'Content-Length': post_length
-		}
-  	};
-
-	// Set up the request
-	var post_req = https.request(post_options, function(res) {
-		res.setEncoding('utf8');
-		res.on('data', function (chunk) {
-			console.log('Everlive Auth Response: ' + chunk);
-		});
-	});
-
-	post_req.write(JSON.stringify(post_data));
-	post_req.end();
-}
-
-function postToEverlive(stackTemp, outdoorTemp, psi) {
-	var post_data = {
-		IndoorTemp: stackTemp,
-		OutdoorTemp: outdoorTemp,
-		PSI: psi,
-		Device: 'test'
-	}
-
-	var post_length = JSON.stringify(post_data).length;
-
-	var post_options = {
-		host: 'api.everlive.com',
-		port: '443',
-		path: '/v1/XxNT7WRnd3pbqZz5/StackStatus',
-		method: 'POST',
-		headers: {
-		  'Content-Type': 'application/json',
-		  'Content-Length': post_length
-		}
-  	};
-
-	// Set up the request
-	var post_req = https.request(post_options, function(res) {
-		res.setEncoding('utf8');
-		res.on('data', function (chunk) {
-			console.log('Everlive Response: ' + chunk);
-		});
-	});
-
-	post_req.write(JSON.stringify(post_data));
-	post_req.end();
-
-}
-
-
-function postToM2x(stream, temp) {
-
-	var post_data = {
-		value: temp
-	};
-
-	var post_length = JSON.stringify(post_data).length;
-
-	var post_options = {
-		host: 'api-m2x.att.com',
-		port: '80',
-		path: '/v2/devices/6db7bd071d27c8baccb77c544a3ceeaa/streams/' + stream + '/value',
-		method: 'PUT',
-		headers: {
-		  'Content-Type': 'application/json',
-		  'X-M2X-KEY': '82a2c1052b94a2ea4522ceabc864492d',
-		  'Content-Length': post_length
-		}
-  	};
-
-	// Set up the request
-	var post_req = http.request(post_options, function(res) {
-		res.setEncoding('utf8');
-		res.on('data', function (chunk) {
-			console.log('M2X Response: ' + chunk);
-		});
-	});
-
-	post_req.write(JSON.stringify(post_data));
-	post_req.end();
+	everlive.post(stackTemp, outdoorTemp, currentVaccum);
 }
 
 function shouldFanBeRunning(temp, relay) {
+
+	// todo ... neet to account for the pressure setting...
+
 	var fanPin = settings.gpio.fan,
 		threshold = settings.fanThreshold;
 
