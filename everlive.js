@@ -36,7 +36,7 @@ function authenticate() {
 }
 */
 
-function post(stackTemp, outdoorTemp, psi) {
+var post = function(stackTemp, outdoorTemp, psi) {
 	var post_data = {
 		IndoorTemp: stackTemp,
 		OutdoorTemp: outdoorTemp,

@@ -1,6 +1,6 @@
 var http				= require('http');
 
-function post(stream, temp) {
+var post = function (stream, temp) {
 
 	var post_data = {
 		value: temp
