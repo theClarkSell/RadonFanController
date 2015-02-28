@@ -21,10 +21,6 @@ adc.on('ready', function() {
     console.log('Pins ready, listening to channel');
 });
 
-adc.on('change', function(data) {
-    console.log('Channel ' + data.channel + ' value is now ' + data.value + ' which in proportion is: ' + data.percent);
-});
-
 //clean up.
 adc.on('close', function() {
     console.log('ADC terminated');

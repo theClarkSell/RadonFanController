@@ -74,9 +74,9 @@ function pinInit() {
 var currentVaccum = 0;
 
 adc.on('change', function(data) {
-    console.log('TEST::: Channel ' + data.channel + ' value is now ' + data.value + ' which in proportion is: ' + data.percent);
+    console.log('ADC Channel: ' + data.channel + ' value is now ' + data.value + ' which in proportion is: ' + data.percent);
     
-    currentVaccum = data.percent;
+    currentVaccum = data.value;
 
 });
 
