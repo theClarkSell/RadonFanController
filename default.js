@@ -255,6 +255,9 @@ var relayController = {
 }
 
 //gracefull exit
+process.on('SIGTERM', function() {
+}
+
 process.on('SIGINT', function() {
 	console.log("\nGracefully shutting down from SIGINT (Ctrl+C)");
    
