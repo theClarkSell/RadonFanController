@@ -255,11 +255,11 @@ var relayController = {
 }
 
 //gracefull exit
-process.on('SIGTERM', function() {
-}
+process.on('SIGTERM', cleanAndDestroy);
+process.on('SIGINT', cleanAndDestroy);
 
-process.on('SIGINT', function() {
-	console.log("\nGracefully shutting down from SIGINT (Ctrl+C)");
+function cleanAndDestroy() {
+	console.log("\nGracefully shutting down from SIGINT (Ctrl+C) or SIGTERM");
    
 	async.forEach(Object.keys(settings.gpio), function(pin, callback) { 
     	var pinNumber = settings.gpio[pin];
@@ -272,4 +272,4 @@ process.on('SIGINT', function() {
             return process.exit(0);
     	});        
     });
-});
+}
