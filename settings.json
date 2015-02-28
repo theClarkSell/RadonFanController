@@ -1,7 +1,7 @@
 
 {
-	"fanThreshold": "70",
-	"deIcerThreshold": "71",
+	"fanThreshold": "69",
+	"deIcerThreshold": "72",
 	"checkInterval": "10000",
 	"pushNotificaitonUrl": "http://test.com/test",
 	"tempSensors": {
