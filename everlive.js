@@ -36,7 +36,7 @@ function authenticate() {
 */
 
 var everlive = {
-	post = function(stackTemp, outdoorTemp, psi) {
+	post: function(stackTemp, outdoorTemp, psi) {
 		var post_data = {
 			IndoorTemp: stackTemp,
 			OutdoorTemp: outdoorTemp,
