@@ -137,9 +137,9 @@ function shouldFanBeRunning(temp, relay) {
 		threshold = settings.fanThreshold;
 
 	if ( temp <= threshold ) {
-		relay.off(fanPin);
+		relay.open(fanPin);
 	} else {
-		relay.on(fanPin);
+		relay.closed(fanPin);
 	}
 } 
 
@@ -147,20 +147,25 @@ function shouldDeIcerBeRunning(temp, relay) {
 	var deIcer = settings.gpio.deIcer,
 		threshold = settings.fanThreshold;
 
-	if ( temp <= threshold ) {
-		relay.off(deIcer);
+	if ( temp >= threshold ) {
+		relay.open(deIcer);
 	} else {
-		relay.on(deIcer);
+		relay.closed(deIcer);
 	}
 } 
 
+/*
+	relay should be setup for normally closed aka circuit ON.
+	this means to turn something off... we need activate the relay which opens the circuit
+*/
+
 var relayController = {
-	on: function (pin) {  
-		gpio.write(pin, true, writeComplete(pin, 'on'));
+	open: function (pin) {  
+		gpio.write(pin, true, writeComplete(pin, 'relay open'));
 	},
 	
-	off: function (pin) { 
-		gpio.write(pin, false, writeComplete(pin, 'off'));
+	closed: function (pin) { 
+		gpio.write(pin, false, writeComplete(pin, 'relay closed'));
 	}
 }
 
