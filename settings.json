@@ -2,7 +2,7 @@
 {
 	"fanThreshold": "15",
 	"deIcerThreshold": "30",
-	"checkInterval": "10000",
+	"checkInterval": "300000",
 	"pushNotificaitonUrl": "http://test.com/test",
 	"tempSensors": {
 		"outDoor": "28-00000698151e",
