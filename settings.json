@@ -5,8 +5,8 @@
 	"checkInterval": "10000",
 	"pushNotificaitonUrl": "http://test.com/test",
 	"tempSensors": {
-		"outDoor": "28-0000069695fa",
-		"stack": "28-00000698151e"
+		"outDoor": "28-00000698151e",
+		"stack": "28-0000069695fa"
 	},
 	"gpio": {
 		"fan": "16",
