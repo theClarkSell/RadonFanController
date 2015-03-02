@@ -42,9 +42,9 @@ var everlive = {
 			Device: device,
 			State: state,
 			GPIO: pin
-		}
+		};
 
-		postToEverlive(post_data, 'ActionTaken');
+		this.postToEverlive(post_data, 'ActionTaken');
 	},
 
 	postToEverlive: function (postData, action) {	
@@ -81,7 +81,7 @@ var everlive = {
 			OutdoorTemp: outdoorTemp,
 			PSI: psi,
 			Device: 'test'
-		}
+		};
 
 		var post_length = JSON.stringify(post_data).length;
 
