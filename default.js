@@ -158,13 +158,14 @@ function shouldDeIcerBeRunning(temp, relay) {
 	relay should be setup for normally closed aka circuit ON.
 	this means to turn something off... we need activate the relay which opens the circuit
 */
-
 var relayController = {
 	open: function (pin) {  
+		everlive.updateState('Clark Home', 'relay opened', pin);
 		gpio.write(pin, true, writeComplete(pin, 'relay open'));
 	},
 	
 	closed: function (pin) { 
+		everlive.updateState('Clark Home', 'relay closed', pin);
 		gpio.write(pin, false, writeComplete(pin, 'relay closed'));
 	}
 }
