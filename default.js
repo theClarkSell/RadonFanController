@@ -145,7 +145,7 @@ function shouldFanBeRunning(temp, relay) {
 
 function shouldDeIcerBeRunning(temp, relay) {
 	var deIcer = settings.gpio.deIcer,
-		threshold = settings.fanThreshold;
+		threshold = settings.deIcerThreshold;
 
 	if ( temp > threshold ) {
 		relay.open(deIcer);
