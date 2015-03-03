@@ -77,7 +77,6 @@ adc.on('change', function(data) {
     console.log('ADC Channel: ' + data.channel + ' value is now ' + data.value + ' which in proportion is: ' + data.percent);
     
     currentVaccum = data.value;
-
 });
 
 function writeComplete (pinNumber, message) {
@@ -94,39 +93,43 @@ function calculateTemp(value){
 var lastOutdoorTemp, 
 	outdoorTemp,
 	lastStackTemp,
-	stackTemp;
+	stackTemp,
+	dirty = false;
 
 function tempFunc () {
 	console.log(Date.now(), '>> checking temp');
 
 	sense.temperature(settings.tempSensors.stack, function(err, value) {
-
 		stackTemp = calculateTemp(value);
-		console.log('Stack temperature is: ', stackTemp.green);
 
 		if (lastStackTemp !== stackTemp) {
+			dirty = true;
 			lastStackTemp = stackTemp;
 			m2x.post('stackTemp', stackTemp);	
 		}
-		
 	});
 
 	sense.temperature(settings.tempSensors.outDoor, function(err, value) {
-
 		outdoorTemp = calculateTemp(value);
-		console.log('Current temperature is: ', outdoorTemp.green);
-
-		if (lastOutdoorTemp !== outdoorTemp) {
-			lastOutdoorTemp = outdoorTemp;
-			m2x.post('outdoorTemp', outdoorTemp);	
-		}
 		
-		//Check the temp and kill the fan // this could be pulled out into a callback
-		shouldFanBeRunning(outdoorTemp, relayController);
-		shouldDeIcerBeRunning(outdoorTemp, relayController);
+		if (lastOutdoorTemp !== outdoorTemp) {
+			dirty = true;
+			lastOutdoorTemp = outdoorTemp;
+		
+			//Check the temp and kill the fan // this could be pulled out into a callback
+			shouldFanBeRunning(outdoorTemp, relayController);
+			shouldDeIcerBeRunning(outdoorTemp, relayController);
+
+			m2x.post('outdoorTemp', outdoorTemp);	
+		}		
 	});
 
-	everlive.post(stackTemp, outdoorTemp, currentVaccum);
+	console.log('Stack: ', stackTemp.green, 'Outdoor: ', outdoorTemp.green);
+
+	if (dirty) {
+		everlive.post(stackTemp, outdoorTemp, currentVaccum);
+		dirty = false;
+	}
 }
 
 function shouldFanBeRunning(temp, relay) {
