@@ -124,7 +124,7 @@ function tempFunc () {
 		}		
 	});
 
-	console.log('Stack: ', stackTemp.green, 'Outdoor: ', outdoorTemp.green);
+	console.log('Stack: ', stackTemp, 'Outdoor: ', outdoorTemp);
 
 	if (dirty) {
 		everlive.post(stackTemp, outdoorTemp, currentVaccum);
