@@ -103,7 +103,6 @@ function tempFunc () {
 		stackTemp = calculateTemp(value);
 
 		if (lastStackTemp !== stackTemp) {
-			dirty = true;
 			lastStackTemp = stackTemp;
 			m2x.post('stackTemp', stackTemp);	
 		}
@@ -113,23 +112,19 @@ function tempFunc () {
 		outdoorTemp = calculateTemp(value);
 		
 		if (lastOutdoorTemp !== outdoorTemp) {
-			dirty = true;
 			lastOutdoorTemp = outdoorTemp;
-		
-			//Check the temp and kill the fan // this could be pulled out into a callback
-			shouldFanBeRunning(outdoorTemp, relayController);
-			shouldDeIcerBeRunning(outdoorTemp, relayController);
-
 			m2x.post('outdoorTemp', outdoorTemp);	
 		}		
 	});
 
 	console.log('Stack: ', stackTemp, 'Outdoor: ', outdoorTemp);
 
-	if (dirty) {
-		everlive.post(stackTemp, outdoorTemp, currentVaccum);
-		dirty = false;
-	}
+	//Check the temp and kill the fan // this could be pulled out into a callback
+	shouldFanBeRunning(outdoorTemp, relayController);
+	shouldDeIcerBeRunning(outdoorTemp, relayController);
+
+	everlive.post(stackTemp, outdoorTemp, currentVaccum);
+	
 }
 
 function shouldFanBeRunning(temp, relay) {
