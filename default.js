@@ -1,4 +1,3 @@
-
 var async       		= require('async');
 var express 			= require('express');
 var sense 				= require('ds18b20');
