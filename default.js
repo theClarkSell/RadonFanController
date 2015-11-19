@@ -1,3 +1,4 @@
+
 var async       		= require('async');
 var express 			= require('express');
 var sense 				= require('ds18b20');
@@ -104,7 +105,7 @@ function tempFunc () {
 
 		if (lastStackTemp !== stackTemp) {
 			lastStackTemp = stackTemp;
-			//m2x.post('stackTemp', stackTemp);	
+			//m2x.post('stackTemp', stackTemp);
 		}
 	});
 
