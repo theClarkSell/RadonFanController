@@ -42,7 +42,7 @@ async.parallel([
 
 function run() {
     pinInit();
-    
+
     // read the params... if exists... call the auto upater
     var accessToken = argv.auth;
 	if (accessToken) {
@@ -51,21 +51,21 @@ function run() {
 
 		gitHooks.setupWebHook(accessToken);
 	}
-	
+
     setInterval(tempFunc, settings.checkInterval);
 }
 
 //should pass in the pins so we can test better....
 function pinInit() {
 
-	async.forEach(Object.keys(settings.gpio), function(pin, callback) { 
+	async.forEach(Object.keys(settings.gpio), function(pin, callback) {
     	var pinNumber = settings.gpio[pin];
-        gpio.write(pinNumber, false, writeComplete(pinNumber, 'off'));	
+        gpio.write(pinNumber, false, writeComplete(pinNumber, 'off'));
         callback();
 
     }, function(err) {
         if (err) return next(err); //need to figure this out
-    	
+
     	console.log('All pins initalized');
     	gpio.write(settings.gpio.ledOn, true, writeComplete(settings.gpio.ledOn, 'led on'));
     });
@@ -75,7 +75,7 @@ var currentVaccum = 0;
 
 adc.on('change', function(data) {
     console.log('ADC Channel: ' + data.channel + ' value is now ' + data.value + ' which in proportion is: ' + data.percent);
-    
+
     currentVaccum = data.value;
 });
 
@@ -90,7 +90,7 @@ function calculateTemp(value){
 	return temp;
 }
 
-var lastOutdoorTemp, 
+var lastOutdoorTemp,
 	outdoorTemp,
 	lastStackTemp,
 	stackTemp,
@@ -104,17 +104,17 @@ function tempFunc () {
 
 		if (lastStackTemp !== stackTemp) {
 			lastStackTemp = stackTemp;
-			m2x.post('stackTemp', stackTemp);	
+			//m2x.post('stackTemp', stackTemp);	
 		}
 	});
 
 	sense.temperature(settings.tempSensors.outDoor, function(err, value) {
 		outdoorTemp = calculateTemp(value);
-		
+
 		if (lastOutdoorTemp !== outdoorTemp) {
 			lastOutdoorTemp = outdoorTemp;
-			m2x.post('outdoorTemp', outdoorTemp);	
-		}		
+			//m2x.post('outdoorTemp', outdoorTemp);
+		}
 	});
 
 	console.log('Stack: ', stackTemp, 'Outdoor: ', outdoorTemp);
@@ -124,7 +124,7 @@ function tempFunc () {
 	shouldDeIcerBeRunning(outdoorTemp, relayController);
 
 	everlive.post(stackTemp, outdoorTemp, currentVaccum);
-	
+
 }
 
 function shouldFanBeRunning(temp, relay) {
@@ -139,7 +139,7 @@ function shouldFanBeRunning(temp, relay) {
 	} else {
 		relay.closed(fanPin);
 	}
-} 
+}
 
 function shouldDeIcerBeRunning(temp, relay) {
 	var deIcer = settings.gpio.deIcer,
@@ -150,19 +150,19 @@ function shouldDeIcerBeRunning(temp, relay) {
 	} else {
 		relay.closed(deIcer);
 	}
-} 
+}
 
 /*
 	relay should be setup for normally closed aka circuit ON.
 	this means to turn something off... we need activate the relay which opens the circuit
 */
 var relayController = {
-	open: function (pin) {  
+	open: function (pin) {
 		everlive.updateState('Clark Home', 'relay opened', pin);
 		gpio.write(pin, true, writeComplete(pin, 'relay open'));
 	},
-	
-	closed: function (pin) { 
+
+	closed: function (pin) {
 		everlive.updateState('Clark Home', 'relay closed', pin);
 		gpio.write(pin, false, writeComplete(pin, 'relay closed'));
 	}
@@ -174,16 +174,16 @@ process.on('SIGINT', cleanAndDestroy);
 
 function cleanAndDestroy() {
 	console.log("\nGracefully shutting down from SIGINT (Ctrl+C) or SIGTERM");
-   
-	async.forEach(Object.keys(settings.gpio), function(pin, callback) { 
+
+	async.forEach(Object.keys(settings.gpio), function(pin, callback) {
     	var pinNumber = settings.gpio[pin];
-        gpio.write(pinNumber, false, writeComplete(pinNumber, 'off'));	
+        gpio.write(pinNumber, false, writeComplete(pinNumber, 'off'));
         callback();
 
     }, function(err) {
         gpio.destroy(function() {
 			console.log('Closed pins, now exit');
             return process.exit(0);
-    	});        
+    	});
     });
 }
