@@ -1,4 +1,3 @@
-//clark
 
 var async       		= require('async');
 var express 			= require('express');
