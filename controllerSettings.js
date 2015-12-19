@@ -2,8 +2,8 @@ var _fs 		= require('fs');
 var _extend = require('extend');
 
 var baseSettings = {
-	"fanThreshold": "70",
-	"deIcerThreshold": "69",
+	"fanThreshold": "20",
+	"deIcerThreshold": "32",
 	"checkInterval": "5000",
 	"pushNotificaitonUrl": "http://test.com/test",
 	"gpio": {
