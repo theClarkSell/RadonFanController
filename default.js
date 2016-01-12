@@ -119,32 +119,8 @@ function tempFunc () {
 	console.log('Stack: ', stackTemp, 'Outdoor: ', outdoorTemp);
 
 	//Check the temp and kill the fan // this could be pulled out into a callback
-	shouldFanBeRunning(outdoorTemp, relayController);
-	shouldDeIcerBeRunning(outdoorTemp, relayController);
-}
-
-function shouldFanBeRunning(temp, relay) {
-
-	// todo ... neet to account for the pressure setting...
-	var fanPin = settings.gpio.fan,
-		threshold = settings.fanThreshold;
-
-	if ( temp < threshold ) {
-		relay.open(fanPin);
-	} else {
-		relay.closed(fanPin);
-	}
-}
-
-function shouldDeIcerBeRunning(temp, relay) {
-	var deIcer = settings.gpio.deIcer,
-		threshold = settings.deIcerThreshold;
-
-	if ( temp > threshold ) {
-		relay.open(deIcer);
-	} else {
-		relay.closed(deIcer);
-	}
+	shouldFanBeRunning(outdoorTemp);
+	shouldDeIcerBeRunning(outdoorTemp);
 }
 
 /*
@@ -154,9 +130,7 @@ function shouldDeIcerBeRunning(temp, relay) {
 var relayController = {
 	open: function (pin) {
 		console.log('Opening pin #: ', pin);
-		//gpio.write(pin, true, writeComplete(pin, 'relay open'));
-
-    gpio.write(pin, true, function(err){
+		gpio.write(pin, true, function(err){
       if(err){
         console.log(err);
       } else {
@@ -167,14 +141,36 @@ var relayController = {
 
 	closed: function (pin) {
     console.log('Closing pin #: ', pin);
-		//gpio.write(pin, false, writeComplete(pin, 'relay closed'));
-    gpio.write(pin, true, function(err){
+		gpio.write(pin, true, function(err){
       if(err){
         console.log(err);
       } else {
         writeComplete(pin, 'relay closed')
       }
     });
+	}
+}
+
+function shouldFanBeRunning(temp) {
+	// todo ... neet to account for the pressure setting...
+	var fanPin = settings.gpio.fan,
+		threshold = settings.fanThreshold;
+
+	if ( temp < threshold ) {
+		relayController.open(fanPin);
+	} else {
+		relayController.closed(fanPin);
+	}
+}
+
+function shouldDeIcerBeRunning(temp) {
+	var deIcer = settings.gpio.deIcer,
+		threshold = settings.deIcerThreshold;
+
+	if ( temp > threshold ) {
+		relayController.open(deIcer);
+	} else {
+		relayController.closed(deIcer);
 	}
 }
 
