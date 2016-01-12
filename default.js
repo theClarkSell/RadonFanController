@@ -15,8 +15,8 @@ var m2x 				= require('m2x');
 var controllerSettings 	= require('./controllerSettings');
 var adc					= require('./adc');
 var gitHooks			= require('./git');
-var m2x					= require('./m2x');
-var everlive 			= require('./everlive');
+//var m2x					= require('./m2x');
+//var everlive 			= require('./everlive');
 
 console.log('Started...');
 
@@ -105,7 +105,6 @@ function tempFunc () {
 
 		if (lastStackTemp !== stackTemp) {
 			lastStackTemp = stackTemp;
-			//m2x.post('stackTemp', stackTemp);
 		}
 	});
 
@@ -114,7 +113,6 @@ function tempFunc () {
 
 		if (lastOutdoorTemp !== outdoorTemp) {
 			lastOutdoorTemp = outdoorTemp;
-			//m2x.post('outdoorTemp', outdoorTemp);
 		}
 	});
 
@@ -123,15 +121,11 @@ function tempFunc () {
 	//Check the temp and kill the fan // this could be pulled out into a callback
 	shouldFanBeRunning(outdoorTemp, relayController);
 	shouldDeIcerBeRunning(outdoorTemp, relayController);
-
-	everlive.post(stackTemp, outdoorTemp, currentVaccum);
-
 }
 
 function shouldFanBeRunning(temp, relay) {
 
 	// todo ... neet to account for the pressure setting...
-
 	var fanPin = settings.gpio.fan,
 		threshold = settings.fanThreshold;
 
@@ -159,13 +153,28 @@ function shouldDeIcerBeRunning(temp, relay) {
 */
 var relayController = {
 	open: function (pin) {
-		everlive.updateState('Clark Home', 'relay opened', pin);
-		gpio.write(pin, true, writeComplete(pin, 'relay open'));
+		console.log('Opening pin #: ', pin);
+		//gpio.write(pin, true, writeComplete(pin, 'relay open'));
+
+    gpio.write(pin, true, function(err){
+      if(err){
+        console.log(err);
+      } else {
+        writeComplete(pin, 'relay open')
+      }
+    });
 	},
 
 	closed: function (pin) {
-		everlive.updateState('Clark Home', 'relay closed', pin);
-		gpio.write(pin, false, writeComplete(pin, 'relay closed'));
+    console.log('Closing pin #: ', pin);
+		//gpio.write(pin, false, writeComplete(pin, 'relay closed'));
+    gpio.write(pin, true, function(err){
+      if(err){
+        console.log(err);
+      } else {
+        writeComplete(pin, 'relay closed')
+      }
+    });
 	}
 }
 

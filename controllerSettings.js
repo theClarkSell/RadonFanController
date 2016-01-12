@@ -7,8 +7,8 @@ var baseSettings = {
 	"checkInterval": "5000",
 	"pushNotificaitonUrl": "http://test.com/test",
 	"gpio": {
-		"fan": "18",
-		"deIcer": "16",
+		"fan": "16",
+		"deIcer": "18",
 		"ledOn": "11"
 	}
 };
