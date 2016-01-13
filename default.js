@@ -1,22 +1,16 @@
 
-var async       		= require('async');
-var express 			= require('express');
-var sense 				= require('ds18b20');
-var gpio 				= require('rpi-gpio');
-var http				= require('http');
-var https				= require('https');
-var consoleColors		= require('colors');
-var argv 				= require('minimist')(process.argv.slice(2));
-
-//3rd party services
-var m2x 				= require('m2x');
+var async            = require('async');
+var sense 			     = require('ds18b20');
+var gpio 				     = require('rpi-gpio');
+var http			 	     = require('http');
+var https				     = require('https');
+var consoleColors		 = require('colors');
+var argv 				     = require('minimist')(process.argv.slice(2));
 
 //our modules
 var controllerSettings 	= require('./controllerSettings');
-var adc					= require('./adc');
-var gitHooks			= require('./git');
-//var m2x					= require('./m2x');
-//var everlive 			= require('./everlive');
+var adc					        = require('./adc');
+var gitHooks			      = require('./git');
 
 console.log('Started...');
 
@@ -141,7 +135,7 @@ var relayController = {
 
 	closed: function (pin) {
     console.log('Closing pin #: ', pin);
-		gpio.write(pin, true, function(err){
+		gpio.write(pin, false, function(err){
       if(err){
         console.log(err);
       } else {
